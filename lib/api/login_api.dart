@@ -3,7 +3,6 @@ import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/api_endpoint.dart';
 import 'package:borderless/components/home.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
-// import 'package:borderless/utils/is_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
@@ -11,16 +10,6 @@ import 'package:provider/provider.dart';
 
 Future loginUser(context, String email, String password) async {
   String apiUrl = '${ApiEndpoint.endpoint}/api/token/';
-
-  // // loading screen
-  // if (context.mounted) {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => const IsLoading(),
-  //     ),
-  //   );
-  // }
 
   try {
     final response = await http.post(
@@ -42,10 +31,6 @@ Future loginUser(context, String email, String password) async {
       // Reset user profile when logging out
       userProfileProvider.resetUserProfile();
 
-      // if (context.mounted) {
-      //   Navigator.of(context).pop(); // Hide loading screen
-      // }
-
       if (context.mounted) {
         return await Navigator.pushReplacement(
           context,
@@ -57,13 +42,11 @@ Future loginUser(context, String email, String password) async {
       }
     } else {
       if (context.mounted) {
-        // Navigator.of(context).pop();
         _showDialogLogin(context);
       }
     }
   } catch (e) {
     if (context.mounted) {
-      // Navigator.of(context).pop();
       _showDialogLogin(context);
     }
   }

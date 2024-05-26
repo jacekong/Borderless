@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/websocket_api.dart';
 import 'package:borderless/api/websocket_service.dart';
@@ -26,6 +25,7 @@ void main() async {
   await NotificationController.initializeLocalNotifications();
   await AuthManager.init();
   await dotenv.load(fileName: ".env");
+  
   runApp(
    MultiProvider(
       providers: [

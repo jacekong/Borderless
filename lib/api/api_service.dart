@@ -31,7 +31,8 @@ class ApiService {
       final List<dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
       return responseData.map((data) => Post.fromJson(data)).toList();
     } else {
-      throw Exception('Failed to load posts');
+      // Handle other HTTP error codes
+      throw Exception('Failed to load posts: ${response.statusCode}');
     }
   }
   // loggedin user posts

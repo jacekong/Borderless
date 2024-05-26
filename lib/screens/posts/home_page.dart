@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
       _posts = ApiService.fetchPosts();
     });
   }
-
+  
 
   @override
   Widget build(BuildContext context) {
