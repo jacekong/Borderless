@@ -36,7 +36,7 @@ Future loginUser(context, String email, String password) async {
           context,
           MaterialPageRoute(
             builder: (context) =>
-                Home(authToken: authToken, refreshToken: refreshToken),
+                const Home(),
           ),
         );
       }

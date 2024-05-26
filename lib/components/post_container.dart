@@ -11,8 +11,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
-
 
 class PostContainer extends StatefulWidget {
   final Post post;
@@ -23,41 +23,43 @@ class PostContainer extends StatefulWidget {
   State<PostContainer> createState() => _PostContainerState();
 }
 
-class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveClientMixin {
-
-    void _navigateToDetailPage(Post post) {
+class _PostContainerState extends State<PostContainer>
+    with AutomaticKeepAliveClientMixin {
+  void _navigateToDetailPage(Post post) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => PostDetails(post: post),
+      PageTransition(
+        type: PageTransitionType.bottomToTop,
+        child: PostDetails(post: post),
       ),
     );
   }
 
-    void _deletePost(post) async {
-      try {
-        // Call API to delete post
-        await ApiService.deletePost(context, post.id);
-        if (mounted) {
-          Navigator.pop(context);
-        }
-      } catch (e) {
-        // Handle error
-        if (mounted) {
-          CustomSnackbar.show(
-            context: context, 
-            message: '$e', 
-            backgroundColor: Colors.red,
-          );
-        }
+  void _deletePost(post) async {
+    try {
+      // Call API to delete post
+      await ApiService.deletePost(context, post.id);
+      if (mounted) {
+        Navigator.pop(context);
       }
+    } catch (e) {
+      // Handle error
+      if (mounted) {
+        CustomSnackbar.show(
+          context: context,
+          message: '$e',
+          backgroundColor: Colors.red,
+        );
+      }
+    }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     super.build(context);
 
-    final userProfileProvider = Provider.of<UserProfileProvider>(context, listen: false);
+    final userProfileProvider =
+        Provider.of<UserProfileProvider>(context, listen: false);
     final UserProfile? userData = userProfileProvider.userProfile;
 
     final isLoggedInUser = widget.post.author['user_id'] == userData!.id;
@@ -75,7 +77,6 @@ class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveCl
       final formatter = DateFormat('dd MMM, yyyy HH:mm');
       return formatter.format(dateTime.toLocal());
     }
-
 
     return Padding(
       padding: const EdgeInsets.all(7.0),
@@ -110,9 +111,8 @@ class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveCl
                           ),
                           child: CircleAvatar(
                             backgroundImage: CachedNetworkImageProvider(
-                              widget.post.author['avatar'],
-                              cacheManager: customCacheManager
-                            ),
+                                widget.post.author['avatar'],
+                                cacheManager: customCacheManager),
                           ),
                         ),
                       ),
@@ -131,7 +131,9 @@ class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveCl
                                 fontWeight: FontWeight.w700,
                               )),
                           // date created
-                          Text(DateFormatted().formatTimestamp((widget.post.createdDate)),
+                          Text(
+                              DateFormatted()
+                                  .formatTimestamp((widget.post.createdDate)),
                               style: TextStyle(color: Colors.grey[600])),
                         ],
                       ),
@@ -139,30 +141,31 @@ class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveCl
                   ],
                 ),
                 // right dot icon
-                // right dot icon,    
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
-                    child: PopupMenuButton<String>(
-                      itemBuilder: (BuildContext context) =>
-                          <PopupMenuEntry<String>>[      
-                          PopupMenuItem<String>(
-                            value: isLoggedInUser ? "delete" : "favorites",
-                            child: Text(isLoggedInUser ? "刪除" : "收藏"),
-                          ),
-                        ],
-                        onSelected: (String value) {
-                          // Handle menu item selection here
-                          switch (value) {
-                            case 'delete':
-                              _deletePost(widget.post);
-                              break;
-                            case 'favorites':
-                            '';
-                          }
-                        },
-                        child: const Icon(Icons.more_vert),
+                // right dot icon,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                  child: PopupMenuButton<String>(
+                    itemBuilder: (BuildContext context) =>
+                        <PopupMenuEntry<String>>[
+                      PopupMenuItem<String>(
+                        value: isLoggedInUser ? "delete" : "favorites",
+                        child: Text(isLoggedInUser ? "刪除" : "收藏"),
                       ),
-                  )
+                    ],
+                    onSelected: (String value) {
+                      // Handle menu item selection here
+                      switch (value) {
+                        case 'delete':
+                          _deletePost(widget.post);
+                          break;
+                        case 'favorites':
+                          '';
+                      }
+                    },
+                    child: const Icon(Icons.more_vert),
+                  ),
+                )
               ],
             ),
             // caption
@@ -170,7 +173,9 @@ class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveCl
               margin: const EdgeInsets.only(left: 8.0),
               child: Padding(
                 padding: const EdgeInsets.only(left: 11, right: 11, bottom: 11),
-                child: Text(widget.post.content, style: const TextStyle(fontSize: 15, fontFamily: 'Roboto'),
+                child: Text(
+                  widget.post.content,
+                  style: const TextStyle(fontSize: 15, fontFamily: 'Roboto'),
                 ),
               ),
             ),
@@ -192,72 +197,82 @@ class _PostContainerState extends State<PostContainer> with AutomaticKeepAliveCl
                     ),
                     itemCount: widget.post.postImages.length,
                     itemBuilder: (context, imageIndex) {
-                      final imageUrl = widget.post.postImages[imageIndex].images;
+                      final imageUrl =
+                          widget.post.postImages[imageIndex].images;
                       return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ImagePreview(
-                                  imageUrls: widget.post.postImages
-                                      .map((image) => image.images)
-                                      .toList(),
-                                  initialIndex: imageIndex,
-                                ),
-                              ),
-                            );
-                          },
-                          child: Hero(
-                            tag: imageUrl,
-                            child: CachedNetworkImage(
-                              // memCacheHeight: 200,
-                              memCacheWidth: 200,
-                              cacheManager: customCacheManager,
-                              key: UniqueKey(),
-                              imageUrl: imageUrl,
-                              fit: BoxFit.cover,
-                              placeholder: (context, url) => Center(
-                                child: Container(
-                                  color: Colors.blueGrey[500],
-                                  child: const PixelPlaceholder()),
-                              ), // Placeholder widget while loading
-                              errorWidget: (context, url, error) =>
-                                  const Center(
-                                child: Icon(Icons.error),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImagePreview(
+                                imageUrls: widget.post.postImages
+                                    .map((image) => image.images)
+                                    .toList(),
+                                initialIndex: imageIndex,
                               ),
                             ),
+                          );
+                        },
+                        child: Hero(
+                          tag: imageUrl,
+                          child: CachedNetworkImage(
+                            // memCacheHeight: 200,
+                            memCacheWidth: 200,
+                            cacheManager: customCacheManager,
+                            key: UniqueKey(),
+                            imageUrl: imageUrl,
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => Center(
+                              child: Container(
+                                  color: Colors.blueGrey[500],
+                                  child: const PixelPlaceholder()),
+                            ), // Placeholder widget while loading
+                            errorWidget: (context, url, error) => const Center(
+                              child: Icon(Icons.error),
+                            ),
+                          ),
                         ),
                       );
                     },
                   ),
                 ),
               ),
-               const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.0),
-                  child: Divider(thickness: 0.05,),
-                ),
-              // comment btn,
-              Align(
-                alignment: Alignment.centerRight,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    (widget.post.comments.isEmpty) ? const Text('')
-                    : Text(widget.post.comments.length.toString(), style: const TextStyle(color: Colors.grey),),
-                    IconButton(
-                      onPressed: () {
-                        _navigateToDetailPage(widget.post);
-                      }, 
-                      icon: const Icon(Icons.chat_bubble_outline_rounded, color: Colors.grey,),
-                    ),
-                  ],
-                ),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Divider(
+                thickness: 0.05,
               ),
+            ),
+            // comment btn,
+            Align(
+              alignment: Alignment.centerRight,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  (widget.post.comments.isEmpty)
+                      ? const Text('')
+                      : Text(
+                          widget.post.comments.length.toString(),
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                  IconButton(
+                    onPressed: () {
+                      _navigateToDetailPage(widget.post);
+                    },
+                    icon: const Icon(
+                      Icons.chat_bubble_outline_rounded,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+
   @override
   bool get wantKeepAlive => true;
 }

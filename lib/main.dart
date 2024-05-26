@@ -8,6 +8,7 @@ import 'package:borderless/provider/friend_request_provider.dart';
 import 'package:borderless/provider/request_provider.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/login.dart';
+import 'package:borderless/screens/posts/create_post.dart';
 import 'package:borderless/theme/dark_theme.dart';
 import 'package:borderless/theme/light_theme.dart';
 import 'package:borderless/theme/theme_provider.dart';
@@ -131,25 +132,16 @@ class _MyAppState extends State<MyApp> {
           }
           final isLoggedIn = snapshot.data ?? false;
           if (isLoggedIn) {
-            // User is logged in, retrieve auth token
-            final authToken = AuthManager.getAuthToken();
-            final refreshToken = AuthManager.getRefreshToken();
-            if (authToken != null && refreshToken != null) {
-              // Initialize WebSocket service
-              _initWebSocket(authToken);
-              // Navigate to Home screen with authToken
-              return Home(
-                  authToken: authToken,
-                  refreshToken: refreshToken); // Provide refreshToken if needed
-            } else {
-              // Handle the case where authToken is null (shouldn't happen if isLoggedIn() returns true)
-              return Container(); // Return empty container or handle appropriately
-            }
+            return const Home();
           } else {
             return const LoginScreen();
           }
         },
       ),
+      routes: {
+        // '/': (context) => const Home(),
+        '/create-post':(context) => const CreatePost(),
+      },
     );
   }
 }

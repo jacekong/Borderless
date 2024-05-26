@@ -54,7 +54,7 @@ class ApiService {
       return responseData.map((data) => Post.fromJson(data)).toList();
     } else {
       // If the server returns an error response, throw an exception
-      throw Exception('Failed to fetch logged-in user posts');
+    throw Exception('Failed to fetch logged-in user posts');
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:borderless/screens/chat/chat_list.dart';
 import 'package:borderless/screens/posts/create_post.dart';
+import 'package:borderless/utils/page_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:borderless/api/api_service.dart';
@@ -44,14 +45,14 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Theme.of(context).colorScheme.background,
           appBar: AppBar(
             leading: IconButton(
-              onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const CreatePost())), 
+              onPressed: () => Navigator.of(context).push(PageAnimation.createPostRoute()), 
               icon: const Icon(Icons.camera_alt_outlined),
             ),
             title: const Text('Borderless'),
             actions: [
               IconButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ChatListScreen()));
+                  Navigator.of(context).push(PageAnimation.createChatRoute());
                 }, 
                 icon: const Icon(Icons.chat_bubble_outline), 
               ),
@@ -79,12 +80,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   }
                 ) : Center(child: TextButton(
-                  onPressed: () => Navigator.push(context, PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const CreatePost(),
-                      transitionDuration: const Duration(milliseconds: 500),
-                      transitionsBuilder: (_, a, __, c) => FadeTransition(opacity: a, child: c),
-                    ),
-                  ),
+                  onPressed: () => Navigator.of(context).push(PageAnimation.createPostRoute()),
                   child: Text("創建新的貼文", style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
                 ));
               }

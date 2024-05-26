@@ -6,10 +6,10 @@ import 'package:borderless/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class USerDetailPage extends StatelessWidget {
+class UserDetailPage extends StatelessWidget {
   final UserProfile user;
 
-  const USerDetailPage({super.key, required this.user});
+  const UserDetailPage({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -39,64 +39,33 @@ class USerDetailPage extends StatelessWidget {
               ),
             ),
             SizedBox(width: screenWidth * 0.2),
-            // Expanded(
-            //   flex: 5,
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       _sendFriendRequest(context, user.id);
-            //     },
-            //     child: Consumer<FriendRequestStatusProvider>(
-            //       builder: (_, statusProvider, __) {
-            //         FriendRequestStatus status = statusProvider.getStatus();
-            //         bool isFriendRequestSent =
-            //             status.isFriendRequestSent(user.id);
-            //         return TextButton(
-            //           onPressed: () {
-            //             if (isFriendRequestSent) {
-            //               // Cancel friend request
-            //               _cancelFriendRequest(context, user.id);
-            //             } else {
-            //               // Send friend request
-            //               _sendFriendRequest(context, user.id);
-            //             }
-            //           },
-            //           child: Text(
-            //             isFriendRequestSent ? 'Cancel' : 'Add Friend',
-            //             style: TextStyle(
-            //               color: Theme.of(context).colorScheme.secondary,
-            //             ),
-            //           ),
-            //         );
-            //       },
-            //     ),
-            //   ),
-            // ),
             Expanded(
-  flex: 5,
-  child: Consumer<FriendRequestStatusProvider>(
-    builder: (_, statusProvider, __) {
-      FriendRequestStatus status = statusProvider.getStatus();
-      bool isFriendRequestSent = status.isFriendRequestSent(user.id);
-      return TextButton(
-        onPressed: () {
-          if (isFriendRequestSent) {
-            // Cancel friend request
-            _cancelFriendRequest(context, user.id);
-          } else {
-            // Send friend request
-            _sendFriendRequest(context, user.id);
-          }
-        },
-        child: Text(
-          isFriendRequestSent ? 'Cancel' : 'Add Friend',
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.secondary,
-          ),
-        ),
-      );
-    },
-  ),
-),
+              flex: 5,
+              child: Consumer<FriendRequestStatusProvider>(
+                builder: (_, statusProvider, __) {
+                  FriendRequestStatus status = statusProvider.getStatus();
+                  bool isFriendRequestSent =
+                      status.isFriendRequestSent(user.id);
+                  return TextButton(
+                    onPressed: () {
+                      if (isFriendRequestSent) {
+                        // Cancel friend request
+                        _cancelFriendRequest(context, user.id);
+                      } else {
+                        // Send friend request
+                        _sendFriendRequest(context, user.id);
+                      }
+                    },
+                    child: Text(
+                      isFriendRequestSent ? 'Cancel' : 'Add Friend',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.secondary,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
@@ -112,8 +81,8 @@ class USerDetailPage extends StatelessWidget {
       }
       if (context.mounted) {
         CustomSnackbar.show(
-          context: context, 
-          message: "請求發送成功", 
+          context: context,
+          message: "請求發送成功",
           backgroundColor: Colors.green,
         );
       }
@@ -121,8 +90,8 @@ class USerDetailPage extends StatelessWidget {
       // Handle error
       if (context.mounted) {
         CustomSnackbar.show(
-          context: context, 
-          message: "$e", 
+          context: context,
+          message: "$e",
           backgroundColor: Colors.red,
         );
       }
@@ -139,8 +108,8 @@ class USerDetailPage extends StatelessWidget {
       }
       if (context.mounted) {
         CustomSnackbar.show(
-          context: context, 
-          message: "取消成功", 
+          context: context,
+          message: "取消成功",
           backgroundColor: Colors.green,
         );
       }
@@ -148,8 +117,8 @@ class USerDetailPage extends StatelessWidget {
       // Handle error
       if (context.mounted) {
         CustomSnackbar.show(
-          context: context, 
-          message: "$e", 
+          context: context,
+          message: "$e",
           backgroundColor: Colors.red,
         );
       }
