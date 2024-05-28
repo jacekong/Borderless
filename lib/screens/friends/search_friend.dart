@@ -2,6 +2,7 @@ import 'package:borderless/api/api_service.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/screens/account/user_details.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SearchFriend extends StatefulWidget {
   const SearchFriend({super.key});
@@ -76,13 +77,14 @@ class _SearchFriendState extends State<SearchFriend> {
                           NetworkImage(_searchResults[index].avatar),
                     ),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              USerDetailPage(user: _searchResults[index]),
-                        ),
-                      );
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) =>
+                      //         USerDetailPage(user: _searchResults[index]),
+                      //   ),
+                      // );
+                      Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: UserDetailPage(user: _searchResults[index]),));
                     },
                   );
                 },

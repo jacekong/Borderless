@@ -153,23 +153,6 @@ class _CreatePostState extends State<CreatePost> {
             const SizedBox(
               height: 30,
             ),
-            // image display
-            // Image preview grid
-            // Expanded(
-            //   child: Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: GridView.builder(
-            //       itemCount: images.length,
-            //       gridDelegate:
-            //           const SliverGridDelegateWithFixedCrossAxisCount(
-            //           crossAxisCount: 3,
-            //         ),
-            //       itemBuilder: (BuildContext context, int index) {
-            //         return Image.file(File(images[index].path), fit: BoxFit.cover,);
-            //       },
-            //     ),
-            //   ),
-            // ),
             Expanded(
               child: ReorderableListView.builder(
                 itemCount: images.length,
@@ -201,7 +184,7 @@ class _CreatePostState extends State<CreatePost> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 32, right: 32),
                 child: Text(
-                  '確認✅',
+                  '發送✅',
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),

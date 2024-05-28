@@ -1,3 +1,4 @@
+import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/screens/friends/friends_list.dart';
 import 'package:borderless/screens/friends/search_friend.dart';
 import 'package:flutter/material.dart';
@@ -5,12 +6,9 @@ import 'package:borderless/screens/posts/home_page.dart';
 import 'package:borderless/screens/account/settings.dart';
 
 class Home extends StatefulWidget {
-  final String authToken;
-  final String refreshToken;
   
   const Home({
     super.key,
-    required this.authToken, required this.refreshToken,
   });
 
   @override
@@ -18,6 +16,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  // User is logged in, retrieve auth token
+  final authToken = AuthManager.getAuthToken();
+  final refreshToken = AuthManager.getRefreshToken();
    // navigate the bottom bar
   int _selectedIndex = 0;
 

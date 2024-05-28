@@ -1,14 +1,13 @@
 import 'package:borderless/api/api_service.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/request_provider.dart';
-import 'package:borderless/screens/friends/friend_request.dart';
 import 'package:borderless/screens/account/user_profile_page.dart';
+import 'package:borderless/utils/page_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
-
 class FriendsList extends StatefulWidget {
-
   const FriendsList({super.key});
 
   @override
@@ -16,7 +15,6 @@ class FriendsList extends StatefulWidget {
 }
 
 class _FriendsListState extends State<FriendsList> {
-
   late List<UserProfile> _requests = []; // Store the list of friend requests
   late List<UserProfile> _friends = [];
 
@@ -28,7 +26,8 @@ class _FriendsListState extends State<FriendsList> {
   }
 
   Future<void> _fetchFriendRequests() async {
-    final friendRequestProvider = Provider.of<FriendRequestProvider>(context, listen: false);
+    final friendRequestProvider =
+        Provider.of<FriendRequestProvider>(context, listen: false);
     try {
       // Fetch friend requests
       await friendRequestProvider.fetchFriendRequests();
@@ -56,7 +55,10 @@ class _FriendsListState extends State<FriendsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Friends List",style: TextStyle(fontSize: 19),),
+        title: const Text(
+          "Friends List",
+          style: TextStyle(fontSize: 19),
+        ),
       ),
       body: RefreshIndicator(
         color: Colors.green,
@@ -79,21 +81,14 @@ class _FriendsListState extends State<FriendsList> {
                     Positioned(
                       right: 0,
                       child: GestureDetector(
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(50),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 16,
-                            minHeight: 16,
-                          ),
+                        child: CircleAvatar(
+                          radius: 7.0,
+                          backgroundColor: Colors.red,
                           child: Text(
-                            _requests.length.toString(), // Replace with the actual count of friend requests
+                            _requests.length.toString(),
                             style: const TextStyle(
                               color: Colors.white,
-                              fontSize: 12,
+                              fontSize: 10,
                             ),
                             textAlign: TextAlign.center,
                           ),
@@ -103,7 +98,8 @@ class _FriendsListState extends State<FriendsList> {
                   ],
                 ),
                 onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FriendRequestList()));
+                  Navigator.of(context)
+                      .push(PageAnimation.createFriendRequestRoute());
                 },
               ),
             ),
@@ -130,17 +126,22 @@ class _FriendsListState extends State<FriendsList> {
                     itemBuilder: (context, index) {
                       final friend = _friends[index];
                       return ListTile(
-                      leading: CircleAvatar(
-                        backgroundImage: NetworkImage(friend.avatar),
-                      ),
-                      title: Text(friend.username),
-                      onTap: () {
-                        // Navigate to friend's profile page
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => UserProfilePage(userProfile: friend)));
-                      },
-                    );
+                        leading: CircleAvatar(
+                          backgroundImage: NetworkImage(friend.avatar),
+                        ),
+                        title: Text(friend.username),
+                        onTap: () {
+                          // Navigate to friend's profile page
+                          Navigator.push(
+                            context,
+                            PageTransition(
+                              type: PageTransitionType.leftToRight,
+                              child: UserProfilePage(userProfile: friend),
+                            ),
+                          );
+                        },
+                      );
                     },
-             
                   ),
                 ],
               ),

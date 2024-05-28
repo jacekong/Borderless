@@ -5,6 +5,7 @@ import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/chat/chat_page.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 class ChatListScreen extends StatefulWidget {
@@ -31,7 +32,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
   
   @override
   Widget build(BuildContext context) {
-    // Simulated list of friends
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
     final UserProfile? userProfile = userProfileProvider.userProfile;
 
@@ -65,9 +65,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     subtitle: Text(DateFormatted().formatTimestamp(chat.updatedAt), style: const TextStyle(color: Colors.grey),),
                     onTap: () {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ChatPage(friend: chatlist[index].user2),
+                        context, 
+                        PageTransition(
+                          type: PageTransitionType.bottomToTop, 
+                          child: ChatPage(friend: chatlist[index].user2),
                         ),
                       );
                     },
