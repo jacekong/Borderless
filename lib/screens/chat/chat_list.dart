@@ -45,6 +45,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
       );
     }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(userProfile.username),
@@ -90,7 +91,6 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
       ),
     );
-    
   }
 }
 
