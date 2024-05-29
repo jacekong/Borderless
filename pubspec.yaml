@@ -48,6 +48,7 @@ dependencies:
   web_socket_channel: ^2.4.4
   reorderable_grid_view: ^2.2.6
   video_thumbnail: ^0.5.3
+  restart_app: ^1.2.1
 
 dev_dependencies:
   flutter_lints: ^3.0.0
