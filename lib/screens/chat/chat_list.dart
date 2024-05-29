@@ -35,10 +35,19 @@ class _ChatListScreenState extends State<ChatListScreen> {
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
     final UserProfile? userProfile = userProfileProvider.userProfile;
 
-    if (userProfile != null) {
+    if (userProfile == null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("聊天"),
+        ),
+        body: const Center(
+          child: Text("系統出小差啦。。。"),
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(
-        title: Text(userProfile!.username),
+        title: Text(userProfile.username),
       ),
       body: RefreshIndicator(
         color: Colors.green,
@@ -81,11 +90,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
       ),
     );
-    } else {
-      return const Center(
-        child: Text("系統崩潰啦。。。"),
-      );
-    }
+    
   }
 }
 
