@@ -258,11 +258,19 @@ class _CreatePostState extends State<CreatePost> {
                                 height: double.infinity,
                               ),
                               Positioned(
-                                top: 3,
-                                right: 3,
+                                top: 0,
+                                right: 0,
                                 child: IconButton(
-                                  icon: const Icon(Icons.delete_forever,
-                                      color: Colors.white),
+                                  icon: Container(
+                                    height: 30,
+                                    width: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.black,
+                                      borderRadius: BorderRadius.circular(50)
+                                    ),
+                                    child: const Icon(Icons.cancel,
+                                        color: Colors.white),
+                                  ),
                                   onPressed: () => deleteImage(index),
                                 ),
                               ),
@@ -300,11 +308,11 @@ class _CreatePostState extends State<CreatePost> {
                                           height: 30,
                                           decoration: BoxDecoration(
                                             borderRadius: BorderRadius.circular(50),
-                                            color: Colors.white,
+                                            color: Colors.black,
                                           ),
                                           child: const Icon(
                                             Icons.delete_forever, 
-                                            color: Colors.black,
+                                            color: Colors.white,
                                           ),
                                         ),
                                       ),
@@ -314,7 +322,7 @@ class _CreatePostState extends State<CreatePost> {
                             ),
                           )
                         : const Center(child: CircularProgressIndicator())
-                    : const Center(child: Text('No media selected.')),
+                    : const Center(child: Text('選一張你喜歡的相片吧～')),
 
             ),
             // post button

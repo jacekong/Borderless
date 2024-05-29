@@ -61,7 +61,6 @@ flutter:
   assets:
     - .env
     - assets/
-    - assets/images/IMG_7948.jpg
     - assets/images/animated-bell.gif
 
   fonts:

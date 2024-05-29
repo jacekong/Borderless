@@ -2,6 +2,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:borderless/utils/notification_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
     audioController.end.value = DateTime.now();
     audioController.calcDuration();
     var ap = AudioPlayer();
-    await ap.play(AssetSource("Notification.mp3"));
+    await ap.play(AssetSource("sound2.mp3"));
     ap.onPlayerComplete.listen((a) {});
     if (stop) {
       audioController.isRecording.value = false;
@@ -124,6 +125,7 @@ class _ChatPageState extends State<ChatPage> {
     focusNode.addListener(onFocusChange);
     _initializeUserData();
     userData;
+    NotificationManager.saveUserId(widget.friend.id);
     // Schedule the initialization of ChatHistoryProvider after the build phase
     Future.delayed(Duration.zero, () {
       Provider.of<ChatHistoryProvider>(context, listen: false);
@@ -378,6 +380,7 @@ class _ChatPageState extends State<ChatPage> {
     _textEditingController.dispose();
     _webSocketService.closeWebSocket();
     audioPlayer.dispose();
+    NotificationManager.removeUserId();
     super.dispose();
   }
 
@@ -636,7 +639,7 @@ class _ChatPageState extends State<ChatPage> {
                     child: const Icon(Icons.mic, color: Colors.blue),
                     onLongPress: () async {
                       var audioPlayer = AudioPlayer();
-                      await audioPlayer.play(AssetSource("Notification.mp3"));
+                      await audioPlayer.play(AssetSource("sound2.mp3"));
                       audioPlayer.onPlayerComplete.listen((a) {
                         audioController.start.value = DateTime.now();
                         startRecord();

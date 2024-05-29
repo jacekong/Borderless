@@ -13,6 +13,7 @@ import 'package:borderless/theme/dark_theme.dart';
 import 'package:borderless/theme/light_theme.dart';
 import 'package:borderless/theme/theme_provider.dart';
 import 'package:borderless/utils/notification_controller.dart';
+import 'package:borderless/utils/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -25,6 +26,7 @@ void main() async {
   // Always initialize Awesome Notifications
   await NotificationController.initializeLocalNotifications();
   await AuthManager.init();
+  await NotificationManager.init();
   await dotenv.load(fileName: ".env");
   
   runApp(
@@ -57,6 +59,8 @@ class _MyAppState extends State<MyApp> {
   late Timer _reconnectTimer;
   bool _isConnected = false;
 
+  final String? chatUser = NotificationManager.getUserId();
+
   void _initWebSocket(token) {
     final wsUrl =
         '${WebsocketApi.wsUrl}ws/notifications/';
@@ -77,12 +81,14 @@ class _MyAppState extends State<MyApp> {
     final messageType = message['message_type'];
     final avatar = message['avatar'];
 
-    await NotificationController.createNewNotification(
-      sender, 
-      notification,
-      avatar,
-      messageType,
-    );
+    if (sender != chatUser) {
+      await NotificationController.createNewNotification(
+        sender, 
+        notification,
+        avatar,
+        messageType,
+      );
+    }
 
   }
   void _handleError(dynamic error) {
