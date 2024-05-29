@@ -17,11 +17,61 @@ class _RegisterPageState extends State<RegisterPage> {
   final picker = ImagePicker();
 
   bool _isObsecure = true;
+  bool _isSame = false;
 
   // text controller
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   final _emailController = TextEditingController();
+
+  // Track validation state for each field
+  bool _isUsernameValid = true;
+  bool _isEmailValid = true;
+  bool _isPasswordValid = true;
+  bool _isConfirmPasswordValid = true;
+
+  bool checkPassword() {
+    if (_passwordController.text == _confirmPasswordController.text) {
+      _isSame = true;
+      return _isSame;
+    } else {
+      _isSame = false;
+      return _isSame;
+    }
+  }
+
+  bool isValidEmail(String email) {
+    String pattern =
+        r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$';
+    RegExp regex = RegExp(pattern);
+    return regex.hasMatch(email);
+  }
+
+  void validateFields() {
+    setState(() {
+      _isUsernameValid = _usernameController.text.isNotEmpty;
+      _isEmailValid = _emailController.text.isNotEmpty;
+      _isPasswordValid = _passwordController.text.isNotEmpty;
+      _isConfirmPasswordValid = _confirmPasswordController.text.isNotEmpty;
+    });
+  }
+
+  void handleSubmit() {
+    validateFields();
+    checkPassword();
+
+    if (_isUsernameValid && _isEmailValid && _isPasswordValid && _isConfirmPasswordValid && checkPassword() && isValidEmail(_emailController.text)) {
+      uploadImg();
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('你需要完成所有字段,并确保电子邮件格式正确'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +116,8 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).colorScheme.tertiary,
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: null),
+                      child: const Center(child: Text('選擇你喜歡的頭像喔～', style: TextStyle(fontSize: 12),))
+                    ),
               Positioned(
                 bottom: 0,
                 right: 0,
@@ -91,7 +142,9 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: _isUsernameValid ? Colors.transparent : Colors.red)
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -116,14 +169,16 @@ class _RegisterPageState extends State<RegisterPage> {
           // const SizedBox(
           //   height: 15,
           // ),
-          // nickname
+          // email
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Center(
               child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: _isEmailValid && isValidEmail(_emailController.text) ? Colors.transparent : Colors.red)
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -135,6 +190,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     onChanged: (String text) {},
                     decoration: InputDecoration(
                         border: InputBorder.none,
+                        suffixIcon: const Icon(Icons.email),
                         //hintText: 'Password',
                         labelText: "郵箱",
                         //hintStyle: TextStyle(color: Colors.grey),
@@ -154,7 +210,9 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Container(
                 decoration: BoxDecoration(
                     color: Theme.of(context).colorScheme.tertiary,
-                    borderRadius: BorderRadius.circular(15)),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: _isPasswordValid ? Colors.transparent : Colors.red)
+                ),
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
@@ -184,10 +242,52 @@ class _RegisterPageState extends State<RegisterPage> {
                         ),
                   ),
                 ),
+                
               ),
             ),
           ),
-
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(color: _isConfirmPasswordValid && _isSame ? Colors.transparent : Colors.red)
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller:  _confirmPasswordController,
+                    autofocus: false,
+                    cursorColor: Theme.of(context).colorScheme.secondary,
+                    obscureText: _isObsecure,
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    onChanged: (String text) {},
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          onPressed: () => setState(
+                              () {
+                                _isObsecure = !_isObsecure;
+                              },
+                            ), 
+                          icon: Icon(
+                              _isObsecure
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                            ),
+                        ),
+                        //hintText: 'Password',
+                        labelText: "確認密碼",
+                        labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                        ),
+                  ),
+                ),
+                
+              ),
+            ),
+          ),
           const SizedBox(
             height: 100,
           ),
@@ -208,7 +308,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       onPressed: () {
                         // _showDialog();
-                        uploadImg();
+                        // uploadImg();
+                        handleSubmit();
                       },
                       child: const Text(
                         '確認',

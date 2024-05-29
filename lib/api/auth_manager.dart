@@ -18,7 +18,7 @@ class AuthManager {
     await _prefs!.setString('refreshToken', refreshToken);
   }
 
-  static Future<void> logout(context) async {
+  static Future<void> logout() async {
     await _prefs!.remove('authToken');
     await _prefs!.remove('refreshToken');
   }

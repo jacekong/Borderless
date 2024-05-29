@@ -3,6 +3,7 @@ import 'package:borderless/api/logout.dart';
 import 'package:borderless/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:restart_app/restart_app.dart';
 
 class AccountDrawer extends StatefulWidget {
 
@@ -45,7 +46,8 @@ class _AccountDrawerState extends State<AccountDrawer> {
               title: const Text("退出登錄"),
               onTap: () {
                 logout(context);
-                AuthManager.logout(context);
+                AuthManager.logout();
+                Restart.restartApp();
               },
             ),
             
