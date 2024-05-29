@@ -55,7 +55,7 @@ class _FriendRequestListState extends State<FriendRequestList> {
                   ElevatedButton(
                     onPressed: () {
                       // Accept friend request
-                      ApiService.acceptFriendRequest(sender.id);
+                      ApiService.acceptFriendRequest(context,sender.id);
                       // print("Friend request accepted: ${sender.id}");
                     },
                     child: Text('Accept', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),

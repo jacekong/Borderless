@@ -134,11 +134,11 @@ class ApiService {
   }
 
   // accept friend request
-  static Future<void> acceptFriendRequest(String userId) async {
+  static Future<void> acceptFriendRequest(context,String userId) async {
     try {
       final url = Uri.parse("${ApiEndpoint.endpoint}/accept/friend/request/");
 
-      await http.post(
+      final resposne = await http.post(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -146,6 +146,15 @@ class ApiService {
         },
         body: json.encode({'sender': userId}),
       );
+      if (resposne.statusCode == 200) {
+        if (context.mounted) {
+        CustomSnackbar.show(
+          context: context, 
+          message: "添加好友成功", 
+          backgroundColor: Colors.green,
+        );
+      }
+      }
     } catch (e) {
       rethrow;
     }
