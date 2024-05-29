@@ -212,7 +212,8 @@ class _SettingsState extends State<Settings>
                                           const Icon(Icons.error),
                                       fit: BoxFit.cover,
                                     )
-                                  : Container(
+                                  :
+                                  Container(
                                       // Placeholder when no images are available
                                       color: Colors.grey[200],
                                       child: const Center(

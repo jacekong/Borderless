@@ -8,11 +8,12 @@ import 'package:borderless/screens/posts/post_details.dart';
 import 'package:borderless/utils/pixel_placeholder.dart';
 import 'package:borderless/utils/snack_bar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:intl/intl.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 
 class PostContainer extends StatefulWidget {
   final Post post;
@@ -25,6 +26,10 @@ class PostContainer extends StatefulWidget {
 
 class _PostContainerState extends State<PostContainer>
     with AutomaticKeepAliveClientMixin {
+
+    VideoPlayerController?  videoPlayerController;
+    ChewieController? chewieController;
+
   void _navigateToDetailPage(Post post) {
     Navigator.push(
       context,
@@ -55,6 +60,13 @@ class _PostContainerState extends State<PostContainer>
   }
 
   @override
+  void dispose() {
+    videoPlayerController?.dispose();
+    chewieController?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
 
@@ -72,11 +84,11 @@ class _PostContainerState extends State<PostContainer>
       ),
     );
 
-    String formatDate(String dateString) {
-      final dateTime = DateTime.parse(dateString);
-      final formatter = DateFormat('dd MMM, yyyy HH:mm');
-      return formatter.format(dateTime.toLocal());
-    }
+    // String formatDate(String dateString) {
+    //   final dateTime = DateTime.parse(dateString);
+    //   final formatter = DateFormat('dd MMM, yyyy HH:mm');
+    //   return formatter.format(dateTime.toLocal());
+    // }
 
     return Padding(
       padding: const EdgeInsets.all(7.0),
@@ -232,6 +244,36 @@ class _PostContainerState extends State<PostContainer>
                             ),
                           ),
                         ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+              if (widget.post.postVideo.isNotEmpty)
+               Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  margin: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 1,
+                      mainAxisSpacing: 4.0,
+                      crossAxisSpacing: 4.0,
+                    ),
+                    itemCount: widget.post.postVideo.length,
+                    itemBuilder: (context, videoIndex) {
+                      final videoUrl = widget.post.postVideo[videoIndex].video;
+                      final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+                      final chewieController = ChewieController(
+                        videoPlayerController: videoPlayerController,
+                        autoPlay: false,
+                        looping: false,
+                      );
+                      return Chewie(
+                        controller: chewieController,
                       );
                     },
                   ),

@@ -1,5 +1,3 @@
-import 'package:borderless/screens/chat/chat_list.dart';
-import 'package:borderless/screens/posts/create_post.dart';
 import 'package:borderless/utils/page_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

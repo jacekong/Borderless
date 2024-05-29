@@ -35,6 +35,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
     final UserProfile? userProfile = userProfileProvider.userProfile;
 
+    if (userProfile != null) {
     return Scaffold(
       appBar: AppBar(
         title: Text(userProfile!.username),
@@ -80,6 +81,11 @@ class _ChatListScreenState extends State<ChatListScreen> {
         ),
       ),
     );
+    } else {
+      return const Center(
+        child: Text("系統崩潰啦。。。"),
+      );
+    }
   }
 }
 

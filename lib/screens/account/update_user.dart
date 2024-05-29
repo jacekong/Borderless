@@ -72,7 +72,8 @@ class _UpdateUserState extends State<UpdateUser> {
                             child: Image.file(
                               _image!,
                               fit: BoxFit.cover,
-                            )),
+                            ),
+                        ),
                       )
                     : Container(
                         height: 150,
@@ -81,7 +82,7 @@ class _UpdateUserState extends State<UpdateUser> {
                           color: Theme.of(context).colorScheme.tertiary,
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        child: null),
+                        child: const Center(child: Text("更換頭像"))),
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -175,6 +176,7 @@ class _UpdateUserState extends State<UpdateUser> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
+                       maxLines: null,
                       controller: _bioController,
                       cursorColor: Theme.of(context).colorScheme.secondary,
                       autofocus: false,
