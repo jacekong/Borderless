@@ -4,6 +4,7 @@ import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/chat/chat_page.dart';
 import 'package:borderless/utils/format_date.dart';
+import 'package:borderless/utils/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';

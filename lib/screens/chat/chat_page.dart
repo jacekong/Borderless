@@ -1,6 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:borderless/utils/notification_manager.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:logger/logger.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
+import 'package:record_mp3/record_mp3.dart';
 import 'package:borderless/api/api_service.dart';
 import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/websocket_api.dart';
@@ -11,23 +25,13 @@ import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/utils/audio_controller.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:borderless/utils/image_preview.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:logger/logger.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:record_mp3/record_mp3.dart';
 
 class ChatPage extends StatefulWidget {
   final UserProfile friend;
-
-  const ChatPage({super.key, required this.friend});
+  const ChatPage({
+    super.key,
+    required this.friend,
+  });
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -89,7 +93,7 @@ class _ChatPageState extends State<ChatPage> {
     audioController.end.value = DateTime.now();
     audioController.calcDuration();
     var ap = AudioPlayer();
-    await ap.play(AssetSource("Notification.mp3"));
+    await ap.play(AssetSource("sound2.mp3"));
     ap.onPlayerComplete.listen((a) {});
     if (stop) {
       audioController.isRecording.value = false;
@@ -121,6 +125,7 @@ class _ChatPageState extends State<ChatPage> {
     focusNode.addListener(onFocusChange);
     _initializeUserData();
     userData;
+    NotificationManager.saveUserId(widget.friend.id);
     // Schedule the initialization of ChatHistoryProvider after the build phase
     Future.delayed(Duration.zero, () {
       Provider.of<ChatHistoryProvider>(context, listen: false);
@@ -375,6 +380,7 @@ class _ChatPageState extends State<ChatPage> {
     _textEditingController.dispose();
     _webSocketService.closeWebSocket();
     audioPlayer.dispose();
+    NotificationManager.removeUserId();
     super.dispose();
   }
 
@@ -633,7 +639,7 @@ class _ChatPageState extends State<ChatPage> {
                     child: const Icon(Icons.mic, color: Colors.blue),
                     onLongPress: () async {
                       var audioPlayer = AudioPlayer();
-                      await audioPlayer.play(AssetSource("Notification.mp3"));
+                      await audioPlayer.play(AssetSource("sound2.mp3"));
                       audioPlayer.onPlayerComplete.listen((a) {
                         audioController.start.value = DateTime.now();
                         startRecord();

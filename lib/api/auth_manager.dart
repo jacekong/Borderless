@@ -54,17 +54,14 @@ class AuthManager {
         final body = json.decode(response.body);
         final accessToken = body['access'];
         String newAccessToken = accessToken;
-        print('Access token refreshed: $newAccessToken');
+
         await _prefs!.setString('authToken', newAccessToken);
       }
-      } else {
-        print('something went wrong');
-      }
+      } 
     }
   }
 
   static void _startTokenRefreshTimer() {
-    print('Starting refresh timer');
     const refreshInterval = Duration(minutes: 1); // Interval for token refresh (e.g., every 5 minutes)
     Timer.periodic(refreshInterval, (timer) async {
       await refreshTokenIfNeeded();
