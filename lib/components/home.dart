@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
             label: ''
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: Icon(Icons.settings),
             label: ''
           ),
         ],
