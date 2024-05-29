@@ -78,8 +78,8 @@ class _HomePageState extends State<HomePage> {
                     );
                   }
                 ) : Center(child: TextButton(
-                  onPressed: () => Navigator.of(context).push(PageAnimation.createPostRoute()),
-                  child: Text("創建新的貼文", style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
+                  onPressed: () => _refreshPosts(),
+                  child: Text("點擊刷新喔～", style: TextStyle(color: Theme.of(context).colorScheme.secondary),)
                 ));
               }
             },

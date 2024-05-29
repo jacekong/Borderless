@@ -44,9 +44,9 @@ class _PostContainerState extends State<PostContainer>
     try {
       // Call API to delete post
       await ApiService.deletePost(context, post.id);
-      if (mounted) {
-        Navigator.pop(context);
-      }
+      // if (mounted) {
+      //   Navigator.pop(context);
+      // }
     } catch (e) {
       // Handle error
       if (mounted) {

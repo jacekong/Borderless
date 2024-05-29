@@ -341,8 +341,8 @@ class _ChatPageState extends State<ChatPage> {
   // open phone's gallery
   void openGallery() async {
     // var timestamp = DateTime.now().toString();
-    bool hasPermission = await checkPhotosPermission();
-    if (hasPermission) {
+    // bool hasPermission = await checkPhotosPermission();
+    // if (hasPermission) {
       final image = await picker.pickImage(source: ImageSource.gallery);
       // if image is not null
       if (image != null) {
@@ -359,7 +359,7 @@ class _ChatPageState extends State<ChatPage> {
       } else {
         return;
       }
-    }
+    // }
     return;
   }
 
