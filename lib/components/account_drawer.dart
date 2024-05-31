@@ -49,6 +49,7 @@ class _AccountDrawerState extends State<AccountDrawer> {
                 AuthManager.logout();
                 Restart.restartApp();
               },
+              trailing: const Text('Boderless v1.0.0 beta', style: TextStyle(color: Colors.grey, fontSize: 8),),
             ),
             
           ],
