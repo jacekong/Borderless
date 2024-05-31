@@ -234,7 +234,7 @@ class _CreatePostState extends State<CreatePost> {
               ],
             ),
             const SizedBox(
-              height: 30,
+              height: 5,
             ),
             Expanded(
               child: images.isNotEmpty ? 
@@ -331,7 +331,7 @@ class _CreatePostState extends State<CreatePost> {
                   backgroundColor: Theme.of(context).colorScheme.secondary),
               onPressed: () async {
                 await ApiService.uploadPost(
-                    context, authToken!, _captionController.text, images, _video);
+                    context, authToken!, _captionController.text, images, _video!);
                 // After successfully creating the post, pop the create post window
                 _captionController.clear();
                 images.clear();
