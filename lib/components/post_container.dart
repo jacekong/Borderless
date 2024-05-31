@@ -2,6 +2,7 @@ import 'package:borderless/api/api_service.dart';
 import 'package:borderless/model/posts.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
+import 'package:borderless/screens/account/user_profile_page.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:borderless/utils/image_preview.dart';
 import 'package:borderless/screens/posts/post_details.dart';
@@ -91,7 +92,7 @@ class _PostContainerState extends State<PostContainer>
     // }
 
     return Padding(
-      padding: const EdgeInsets.all(7.0),
+      padding: const EdgeInsets.only(bottom: 7, top: 7, left: 15, right: 15),
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(

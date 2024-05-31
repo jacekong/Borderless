@@ -208,7 +208,7 @@ class ApiService {
   }
 
   // create post
-  static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File? video) async {
+  static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File video) async {
 
     if (context.mounted) {
           Navigator.push(
@@ -234,12 +234,12 @@ class ApiService {
     }
 
     // add video files
-     if (video != null) {
-      request.files.add(await http.MultipartFile.fromPath(
+
+    request.files.add(await http.MultipartFile.fromPath(
         'post_video',
         video.path,
-      ));
-    }
+    ));
+
 
     // Send the request
     final response = await request.send();
