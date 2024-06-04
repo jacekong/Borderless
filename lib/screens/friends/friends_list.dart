@@ -56,7 +56,7 @@ class _FriendsListState extends State<FriendsList> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          "Friends List",
+          "朋友列表",
           style: TextStyle(fontSize: 19),
         ),
       ),
@@ -73,7 +73,7 @@ class _FriendsListState extends State<FriendsList> {
             // Friend Requests section
             Card(
               child: ListTile(
-                title: const Text("Friend Requests"),
+                title: const Text("朋友邀請"),
                 leading: Stack(
                   children: [
                     const Icon(Icons.people),
@@ -111,10 +111,10 @@ class _FriendsListState extends State<FriendsList> {
                   const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Text(
-                      "My Friends",
+                      "我的朋友",
                       style: TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ),

@@ -127,7 +127,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
                             child: Text('Error fetching posts: ${snapshot.error}'));
                       } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                         return const Center(
-                          child: Text('No posts available'),
+                          child: Text('這個人什麼也沒留下喔～'),
                         );
                       } else {
                         // Display user posts

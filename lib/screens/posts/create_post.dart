@@ -27,12 +27,14 @@ class _CreatePostState extends State<CreatePost> {
   List<XFile> images = [];
   File? _video;
 
-  _pickVideo() async {
+  void _pickVideo() async {
     final video = await imagePicker.pickVideo(source: ImageSource.gallery);
 
     if (video == null) return;
 
-    _video = File(video.path);
+    setState(() {
+      _video = File(video.path);
+    });
 
     _videoController?.dispose();
     _chewieController?.dispose();
@@ -73,8 +75,8 @@ class _CreatePostState extends State<CreatePost> {
 
   void deleteVideo() {
     if (_videoController != null) {
-      _videoController!.pause();
-      _videoController!.dispose();
+      _videoController?.pause();
+      _videoController?.dispose();
       _chewieController?.dispose();
       setState(() {
         _videoController = null;
@@ -199,9 +201,10 @@ class _CreatePostState extends State<CreatePost> {
                   child: Padding(
                     padding: EdgeInsets.only(left: screenWidth * 0.007),
                     child: IconButton(
-                        onPressed:  _videoController == null
-                        ? () => pickImages()
-                        : null,
+                        onPressed:  _videoController == null ?
+                         () => pickImages()
+                         :
+                        null,
                         icon: const Icon(Icons.image),
                       ),
                   ),
@@ -238,56 +241,51 @@ class _CreatePostState extends State<CreatePost> {
             ),
             Expanded(
               child: images.isNotEmpty ? 
-              ReorderableGridView.builder(
-                      itemCount: images.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3, // Number of columns
-                        crossAxisSpacing: 8,
-                        mainAxisSpacing: 8,
-                        childAspectRatio: 1, // Ratio of child width to height
-                      ),
-                      itemBuilder: (context, index) {
-                        return GridTile(
-                          key: Key(images[index].path),
-                          child: Stack(
-                            children: [
-                              Image.file(
-                                File(images[index].path),
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
-                              Positioned(
-                                top: 0,
-                                right: 0,
-                                child: IconButton(
-                                  icon: Container(
-                                    height: 30,
-                                    width: 30,
-                                    decoration: BoxDecoration(
-                                      color: Colors.black,
-                                      borderRadius: BorderRadius.circular(50)
-                                    ),
-                                    child: const Icon(Icons.cancel,
-                                        color: Colors.white),
-                                  ),
-                                  onPressed: () => deleteImage(index),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ReorderableGridView.builder(
+                        itemCount: images.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 3, // Number of columns
+                          crossAxisSpacing: 8,
+                          mainAxisSpacing: 8,
+                          childAspectRatio: 1, // Ratio of child width to height
+                        ),
+                        itemBuilder: (context, index) {
+                          return GridTile(
+                            key: Key(images[index].path),
+                            child: Stack(
+                              children: [
+                                Image.file(
+                                  File(images[index].path),
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
                                 ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                      onReorder: (oldIndex, newIndex) {
-                        setState(() {
-                          if (newIndex > oldIndex) {
-                            newIndex -= 1;
-                          }
-                          final XFile image = images.removeAt(oldIndex);
-                          images.insert(newIndex, image);
-                        });
-                      },
-                    )
+                                Positioned(
+                                  top: 0,
+                                  right: 0,
+                                  child: IconButton(
+                                    icon: const Icon(Icons.cancel,
+                                        color: Colors.white),
+                                    onPressed: () => deleteImage(index),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                        onReorder: (oldIndex, newIndex) {
+                          setState(() {
+                            if (newIndex > oldIndex) {
+                              newIndex -= 1;
+                            }
+                            final XFile image = images.removeAt(oldIndex);
+                            images.insert(newIndex, image);
+                          });
+                        },
+                      ),
+              )
               : _videoController != null && _videoController!.value.isInitialized
                     ? _videoController!.value.isInitialized
                         ? AspectRatio(
@@ -331,7 +329,7 @@ class _CreatePostState extends State<CreatePost> {
                   backgroundColor: Theme.of(context).colorScheme.secondary),
               onPressed: () async {
                 await ApiService.uploadPost(
-                    context, authToken!, _captionController.text, images, _video!);
+                    context, authToken!, _captionController.text, images, _video);
                 // After successfully creating the post, pop the create post window
                 _captionController.clear();
                 images.clear();

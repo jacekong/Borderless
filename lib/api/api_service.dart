@@ -8,7 +8,6 @@ import 'package:borderless/model/friend_request.dart';
 import 'package:borderless/model/post_comment.dart';
 import 'package:borderless/model/posts.dart';
 import 'package:borderless/model/user_profile.dart';
-import 'package:borderless/utils/is_loading.dart';
 import 'package:borderless/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -208,16 +207,15 @@ class ApiService {
   }
 
   // create post
-  static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File video) async {
+  static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File? video) async {
 
     if (context.mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const IsLoading(),
-            ),
-          );
-        }
+          CustomSnackbar.show(
+          context: context, 
+          message: "正在發送喔，一下下就好～", 
+          backgroundColor: Colors.blue,
+        );
+    }
     // Create a multipart request
 
     final request = http.MultipartRequest('POST', Uri.parse('${ApiEndpoint.endpoint}/api/posts'));
@@ -234,11 +232,12 @@ class ApiService {
     }
 
     // add video files
-
-    request.files.add(await http.MultipartFile.fromPath(
-        'post_video',
-        video.path,
-    ));
+    if (video != null) {
+      request.files.add(await http.MultipartFile.fromPath(
+          'post_video',
+          video.path,
+      ));
+    }
 
 
     // Send the request

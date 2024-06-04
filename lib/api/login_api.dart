@@ -67,7 +67,7 @@ Future _showDialogLogin(context) {
                 height: 10,
               ),
               const Text(
-                  "user name or password is incorrect, please try again!"),
+                  "郵箱或密碼可能不對喔，再試一次吧～"),
               const SizedBox(
                 height: 20,
               ),
@@ -81,7 +81,7 @@ Future _showDialogLogin(context) {
                   Navigator.of(context).pop();
                 },
                 child: const Text(
-                  "Confirm",
+                  "確認",
                   style: TextStyle(color: Colors.white),
                 ),
               )

@@ -3,6 +3,7 @@ import 'package:borderless/model/chat_list.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/chat/chat_page.dart';
+import 'package:borderless/screens/friends/friends_list.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
@@ -29,7 +30,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       _chatlist = ApiService.getChatList();
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
@@ -61,7 +62,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return const Center(child: Text('No chat list available'));
+              return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      PageTransition(
+                        type: PageTransitionType.bottomToTop,
+                        child: const FriendsList(),
+                      ),
+                    );
+                  },
+                  child: const Center(child: Text('去跟朋友問個好吧～')));
             } else {
               final List<ChatListModel> chatlist = snapshot.data!;
               return ListView.builder(
@@ -72,13 +83,17 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(chat.user2.avatar),
                     ),
-                    title: Text(chat.user2.username, style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(DateFormatted().formatTimestamp(chat.updatedAt), style: const TextStyle(color: Colors.grey),),
+                    title: Text(chat.user2.username,
+                        style: const TextStyle(fontSize: 18)),
+                    subtitle: Text(
+                      DateFormatted().formatTimestamp(chat.updatedAt),
+                      style: const TextStyle(color: Colors.grey),
+                    ),
                     onTap: () {
                       Navigator.push(
-                        context, 
+                        context,
                         PageTransition(
-                          type: PageTransitionType.bottomToTop, 
+                          type: PageTransitionType.bottomToTop,
                           child: ChatPage(friend: chatlist[index].user2),
                         ),
                       );
@@ -93,4 +108,3 @@ class _ChatListScreenState extends State<ChatListScreen> {
     );
   }
 }
-

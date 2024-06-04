@@ -2,7 +2,6 @@ import 'package:borderless/api/api_service.dart';
 import 'package:borderless/model/posts.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
-import 'package:borderless/screens/account/user_profile_page.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:borderless/utils/image_preview.dart';
 import 'package:borderless/screens/posts/post_details.dart';

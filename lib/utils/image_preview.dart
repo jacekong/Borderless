@@ -78,6 +78,16 @@ class _ImagePreviewState extends State<ImagePreview> with AutomaticKeepAliveClie
               },
             ),
             Positioned(
+                    left: 10,
+                    top: 50,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(Icons.cancel, color: Colors.white, size: 30,)
+                    )
+                  ),
+            Positioned(
               bottom: 16,
               left: 0,
               right: 0,

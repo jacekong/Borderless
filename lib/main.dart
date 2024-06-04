@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/websocket_api.dart';
 import 'package:borderless/api/websocket_service.dart';
@@ -15,6 +16,7 @@ import 'package:borderless/theme/theme_provider.dart';
 import 'package:borderless/utils/notification_controller.dart';
 import 'package:borderless/utils/notification_manager.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
@@ -27,6 +29,8 @@ void main() async {
   await NotificationController.initializeLocalNotifications();
   await AuthManager.init();
   await NotificationManager.init();
+  ByteData data = await PlatformAssetBundle().load('assets/ca/lets-encrypt-r3.pem');
+  SecurityContext.defaultContext.setTrustedCertificatesBytes(data.buffer.asUint8List());
   await dotenv.load(fileName: ".env");
   
   runApp(

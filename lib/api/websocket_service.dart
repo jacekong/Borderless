@@ -1,5 +1,6 @@
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:web_socket_channel/io.dart';
 
 class WebSocketService {
@@ -26,6 +27,7 @@ class WebSocketService {
         Uri.parse(wsUrl),
         headers: {
         'Authorization': 'Bearer $token',
+        'Origin': 'https://www.api-borderless-server.com:8001'
       },
       );
 

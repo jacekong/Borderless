@@ -7,7 +7,7 @@ class PixelPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SpinKitWanderingCubes(
-      color: Colors.white,
+      color: Colors.blue,
       size: 20,
     );
   }

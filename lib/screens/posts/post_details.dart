@@ -239,9 +239,9 @@ class _PostDetailsState extends State<PostDetails> {
           ),
           // caption
           Container(
-            margin: const EdgeInsets.only(left: 8.0),
+            margin: const EdgeInsets.symmetric(horizontal: 8),
             child: Padding(
-              padding: const EdgeInsets.only(left: 11, right: 11, bottom: 11),
+              padding: const EdgeInsets.only(left: 11, right: 11, bottom: 3),
               child: Text(
                 widget.post.content,
                 style: const TextStyle(fontSize: 15, fontFamily: 'Roboto'),
@@ -251,11 +251,11 @@ class _PostDetailsState extends State<PostDetails> {
           // image post
           if (widget.post.postImages.isNotEmpty)
             Expanded(
-              flex: 5,
+              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Container(
-                  margin: const EdgeInsets.only(left: 16.0),
+                  margin: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: GridView.builder(
                     cacheExtent: 9999,
                     shrinkWrap: true,
@@ -310,7 +310,7 @@ class _PostDetailsState extends State<PostDetails> {
           // video,
           if (widget.post.postVideo.isNotEmpty)
             Expanded(
-              flex: 3,
+              flex: 1,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Container(
@@ -349,6 +349,7 @@ class _PostDetailsState extends State<PostDetails> {
             ),
           ),
           Expanded(
+            flex:1,
             child: ListView.builder(
               itemCount: _comments.length,
               itemBuilder: (context, index) {
@@ -402,8 +403,8 @@ class _PostDetailsState extends State<PostDetails> {
                           focusColor: Theme.of(context).colorScheme.secondary,
                           hoverColor: Theme.of(context).colorScheme.secondary,
                           border: InputBorder.none,
-                          hintText: 'Type a your comments...',
-                          hintStyle: const TextStyle(color: Colors.black)),
+                          hintText: '添加一條評論',
+                          hintStyle: const TextStyle(color: Colors.grey, fontSize: 15)),
                     ),
                   ),
                   IconButton(

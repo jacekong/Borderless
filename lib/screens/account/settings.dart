@@ -96,7 +96,7 @@ class _SettingsState extends State<Settings>
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
                                 fontSize: 24,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.normal),
                           ),
                         ),
                         // 2. id,
@@ -107,7 +107,7 @@ class _SettingsState extends State<Settings>
                             style: const TextStyle(
                                 color: Colors.grey,
                                 fontSize: 12,
-                                fontWeight: FontWeight.bold),
+                                fontWeight: FontWeight.w500),
                           ),
                         ),
                       ],
@@ -128,9 +128,8 @@ class _SettingsState extends State<Settings>
                 // bio,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("bio: ${userProfile.bio}"),
+                  child: Text("Bio: ${userProfile.bio}"),
                 ),
-
                 // edit profile,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),

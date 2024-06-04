@@ -1,5 +1,6 @@
 import 'package:borderless/api/login_api.dart';
 import 'package:borderless/screens/account/register.dart';
+import 'package:borderless/utils/notification_controller.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -35,6 +36,14 @@ class _LoginScreenState extends State<LoginScreen> {
      }
       
     }
+  }
+
+  @override
+  void initState() {
+     WidgetsBinding.instance.addPostFrameCallback((_) {
+      NotificationController.displayNotificationRationale(context);
+    });
+    super.initState();
   }
 
   @override

@@ -666,8 +666,8 @@ class _ChatPageState extends State<ChatPage> {
                           hoverColor: Theme.of(context).colorScheme.secondary,
                           border: InputBorder.none,
                           hintText: audioController.isRecording.value
-                              ? "Recording audio..."
-                              : "Your message...",
+                              ? "正在錄音..."
+                              : "輸入訊息...",
                           hintStyle: const TextStyle(color: Colors.black)),
                     ),
                   ),

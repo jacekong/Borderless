@@ -35,7 +35,7 @@ class _FriendRequestListState extends State<FriendRequestList> {
 
         // Check if there are no friend requests
         if (friendRequestProvider.friendRequests.isEmpty) {
-          return const Center(child: Text('No friend requests available'));
+          return const Center(child: Text('暫時沒有邀請'));
         }
 
         return ListView.builder(
@@ -58,7 +58,7 @@ class _FriendRequestListState extends State<FriendRequestList> {
                       ApiService.acceptFriendRequest(context,sender.id);
                       // print("Friend request accepted: ${sender.id}");
                     },
-                    child: Text('Accept', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
+                    child: Text('接受', style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
                   ),
                   const SizedBox(width: 8),
                   ElevatedButton(
@@ -66,7 +66,7 @@ class _FriendRequestListState extends State<FriendRequestList> {
                       // Refuse friend request
                       // Implement your logic here
                     },
-                    child: const Text('Refuse', style: TextStyle(color: Colors.red),),
+                    child: const Text('拒絕', style: TextStyle(color: Colors.red),),
                   ),
                 ],
               ),

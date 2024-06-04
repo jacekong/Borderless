@@ -2,7 +2,7 @@ name: borderless
 description: "For home sharing purposes"
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+version: 1.1.0+1
 
 environment:
   sdk: ">=3.3.0 <4.0.0"
@@ -45,7 +45,7 @@ dependencies:
   sizer: ^2.0.15
   video_player: ^2.8.6
   chewie: ^1.8.1
-  web_socket_channel: ^2.4.4
+  web_socket_channel: ^3.0.0
   reorderable_grid_view: ^2.2.6
   video_thumbnail: ^0.5.3
   restart_app: ^1.2.1
@@ -65,6 +65,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/images/animated-bell.gif
+    - assets/ca/lets-encrypt-r3.pem
 
   fonts:
     - family: Roboto
