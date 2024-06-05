@@ -66,6 +66,7 @@ class _MyAppState extends State<MyApp> {
   final String? chatUser = NotificationManager.getUserId();
 
   void _initWebSocket(token) {
+    // print('websocket is listening..');
     final wsUrl =
         '${WebsocketApi.wsUrl}ws/notifications/';
     _webSocketService = WebSocketService(
@@ -82,10 +83,12 @@ class _MyAppState extends State<MyApp> {
   void _handleMessageReceived(Map<String, dynamic> message) async {
     final notification = message['notification'];
     final sender = message['sender'];
+    final senderId = message['sender_id'];
     final messageType = message['message_type'];
     final avatar = message['avatar'];
 
-    if (sender != chatUser) {
+    // print('sender1: $senderId');
+    if (senderId != chatUser) {
       await NotificationController.createNewNotification(
         sender, 
         notification,
@@ -114,6 +117,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
+    _initWebSocket(token);
     super.initState();
   }
 

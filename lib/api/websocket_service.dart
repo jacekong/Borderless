@@ -1,6 +1,5 @@
 
 import 'dart:convert';
-import 'dart:io';
 import 'package:web_socket_channel/io.dart';
 
 class WebSocketService {
