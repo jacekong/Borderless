@@ -8,7 +8,7 @@ class NotificationManager {
   }
 
   static Future<void> saveUserId(String userId) async {
-    _prefs?.setString('userId', userId);
+    await _prefs?.setString('userId', userId);
   }
 
   static String? getUserId() {
@@ -16,6 +16,6 @@ class NotificationManager {
   }
 
   static Future<void> removeUserId() async {
-    _prefs?.remove('userId');
+    await _prefs?.remove('userId');
   }
 }

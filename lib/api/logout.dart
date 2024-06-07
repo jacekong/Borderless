@@ -24,7 +24,8 @@ Future<void> logout(context) async {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const LoginScreen(),
+            builder: (context) => LoginScreen(onLoginSuccess: () {
+                },),
           ),
           (route) => false,
         );
@@ -39,7 +40,8 @@ Future<void> logout(context) async {
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
-          builder: (context) => const LoginScreen(),
+          builder: (context) => LoginScreen(onLoginSuccess: () {
+                },),
         ),
         (route) => false,
       );

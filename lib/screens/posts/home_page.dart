@@ -19,8 +19,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    super.initState();
     _refreshPosts();
+    super.initState();
   }
 
   Future<void> _refreshPosts() async {
@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
           await _refreshPosts();
         },
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           appBar: AppBar(
             leading: IconButton(
               onPressed: () => Navigator.of(context).push(PageAnimation.createPostRoute()), 

@@ -42,8 +42,8 @@ class NotificationController {
             channelKey: 'basic_channel_nitification',
             title: sender,
             body: notification,
-            // bigPicture: '',
-            largeIcon: avatar,
+            // bigPicture: avatar,
+            largeIcon: 'https://$avatar',
             // notificationLayout: NotificationLayout.BigPicture,
             payload: {'notificationId': '1234567890'}),);
     } else if (messageType == 'image') {
@@ -52,9 +52,9 @@ class NotificationController {
             id: UniqueId.createUniqueId(),
             channelKey: 'basic_channel_nitification',
             title: sender,
-            body: '',
-            bigPicture: notification,
-            largeIcon: avatar,
+            body: '$sender 向你發了一張圖片',
+            bigPicture: 'https://$notification',
+            largeIcon: 'https://$avatar',
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'notificationId': '1234567890'}),);
     } else if (messageType == 'audio') {
@@ -63,9 +63,9 @@ class NotificationController {
             id: UniqueId.createUniqueId(),
             channelKey: 'basic_channel_nitification',
             title: sender,
-            body: 'Audio $notification',
+            body: '收到一條來自“$sender”的語音訊息',
             bigPicture: '',
-            largeIcon: avatar,
+            largeIcon: 'https://$avatar',
             notificationLayout: NotificationLayout.BigPicture,
             payload: {'notificationId': '1234567890'}),);
     }

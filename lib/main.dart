@@ -63,10 +63,8 @@ class _MyAppState extends State<MyApp> {
   late Timer _reconnectTimer;
   bool _isConnected = false;
 
-  final String? chatUser = NotificationManager.getUserId();
-
   void _initWebSocket(token) {
-    // print('websocket is listening..');
+    logger.d('Notification websocket is running...');
     final wsUrl =
         '${WebsocketApi.wsUrl}ws/notifications/';
     _webSocketService = WebSocketService(
@@ -81,13 +79,13 @@ class _MyAppState extends State<MyApp> {
   }
 
   void _handleMessageReceived(Map<String, dynamic> message) async {
+    final String? chatUser = NotificationManager.getUserId();
     final notification = message['notification'];
     final sender = message['sender'];
     final senderId = message['sender_id'];
     final messageType = message['message_type'];
     final avatar = message['avatar'];
 
-    // print('sender1: $senderId');
     if (senderId != chatUser) {
       await NotificationController.createNewNotification(
         sender, 
@@ -99,6 +97,7 @@ class _MyAppState extends State<MyApp> {
 
   }
   void _handleError(dynamic error) {
+    logger.d('Notification websocket stop running...');
     logger.e(error);
     _isConnected = false;
     _reconnect(token);
@@ -117,8 +116,15 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    _initWebSocket(token);
+    _checkLoginStatus();
     super.initState();
+  }
+
+  void _checkLoginStatus() async {
+    final isLoggedIn = await AuthManager.isLoggedIn();
+    if (isLoggedIn) {
+      _initWebSocket(token);
+    }
   }
 
   @override
@@ -146,9 +152,14 @@ class _MyAppState extends State<MyApp> {
           }
           final isLoggedIn = snapshot.data ?? false;
           if (isLoggedIn) {
+            _initWebSocket(token);
             return const Home();
           } else {
-            return const LoginScreen();
+            return LoginScreen(
+              onLoginSuccess: () {
+              _initWebSocket(token);
+            }
+            );
           }
         },
       ),

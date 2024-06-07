@@ -525,11 +525,20 @@ class ApiService {
     }
 
   }
-  
+  // send image msg in chat
   static Future<void> sendImageMessage(context, String userId, XFile? image) async {
 
     final url = Uri.parse('${ApiEndpoint.endpoint}/api/chat/images/');
     final request = http.MultipartRequest('POST', url);
+    Fluttertoast.showToast(
+        msg: "圖片發送中。。。",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.blue,
+        textColor: Colors.white,
+        fontSize: 16.0,
+    );
 
     // Set authorization header
     request.headers['Authorization'] = 'Bearer $authToken';
@@ -548,6 +557,7 @@ class ApiService {
 
     try {
         // Check the response status 201 created 
+
       if (response.statusCode == 201) {
         // loading screen
         return;

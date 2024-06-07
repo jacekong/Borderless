@@ -4,7 +4,8 @@ import 'package:borderless/utils/notification_controller.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  final Function onLoginSuccess;
+  const LoginScreen({super.key, required this.onLoginSuccess});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -23,18 +24,31 @@ class _LoginScreenState extends State<LoginScreen> {
       _loggingIn = true;
     });
 
-    try {
-      await loginUser(
-          context, _emailController.text, _passwordController.text);
-    } finally {
+    // try {
+    //   await loginUser(
+    //       context, _emailController.text, _passwordController.text);
+    // } finally {
      
-     if (mounted) {
+    //  if (mounted) {
 
+    //     setState(() {
+    //       _loggingIn = false;
+    //     });
+    //  }
+      
+    // }
+    try {
+      final isLoggedIn = await loginUser(
+          context, _emailController.text, _passwordController.text);
+      if (isLoggedIn) {
+        widget.onLoginSuccess();
+      }
+    } finally {
+      if (mounted) {
         setState(() {
           _loggingIn = false;
         });
-     }
-      
+      }
     }
   }
 
