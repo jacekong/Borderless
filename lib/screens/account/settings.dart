@@ -77,8 +77,6 @@ class _SettingsState extends State<Settings>
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // if (userProfile != null)
-                // row,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -215,10 +213,15 @@ class _SettingsState extends State<Settings>
                                   Container(
                                       // Placeholder when no images are available
                                       color: Colors.grey[200],
-                                      child: const Center(
+                                      child: Center(
                                         child: Text(
-                                          'No Image',
-                                          style: TextStyle(color: Colors.grey),
+                                          softWrap: true,
+                                          overflow: TextOverflow.fade,
+                                          post.content,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 7,
+                                          ),
                                         ),
                                       ),
                                     ),

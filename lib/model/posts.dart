@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:borderless/model/post_comment.dart';
 import 'package:borderless/model/post_image.dart';
 import 'package:borderless/model/post_video.dart';
@@ -7,6 +9,7 @@ class Post {
   final String content;
   final String createdDate;
   final String modifiedDate;
+  final bool   isPublic;
   final List<PostImage> postImages;
   final List<PostVideo> postVideo;
   final Map<String, dynamic> author;
@@ -17,6 +20,7 @@ class Post {
     required this.content,
     required this.createdDate,
     required this.modifiedDate,
+    required this.isPublic,
     required this.postImages,
     required this.postVideo,
     required this.author,
@@ -35,6 +39,7 @@ class Post {
       content: json['post_content'],
       createdDate: json['created_date'],
       modifiedDate: json['modified_date'],
+      isPublic: json['is_public'],
       postImages: postImages,
       postVideo: postVideo,
       author: json['author'],

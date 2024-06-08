@@ -101,8 +101,10 @@ class ApiService {
       if (response.statusCode == 201) {
         // Friend request sent successfully
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('已發送朋友邀請')),
+          CustomSnackbar.show(
+            context: context, 
+            message: '已發送朋友邀請', 
+            backgroundColor: Colors.green,
           );
         }
       } else {
@@ -207,7 +209,7 @@ class ApiService {
   }
 
   // create post
-  static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File? video) async {
+  static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File? video, bool isPublic) async {
 
     if (context.mounted) {
           CustomSnackbar.show(
@@ -225,6 +227,11 @@ class ApiService {
     
     // Add caption field
     request.fields['post_content'] = caption;
+
+    // public post
+    if (isPublic == true) {
+      request.fields['is_public'] = '1';
+    }
 
     // Add image files
     for (int i = 0; i < images.length; i++) {
@@ -531,7 +538,7 @@ class ApiService {
     final url = Uri.parse('${ApiEndpoint.endpoint}/api/chat/images/');
     final request = http.MultipartRequest('POST', url);
     Fluttertoast.showToast(
-        msg: "圖片發送中。。。",
+        msg: "圖片發送中...",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.CENTER,
         timeInSecForIosWeb: 3,
@@ -584,6 +591,24 @@ class ApiService {
       }
     }
 
+  }
+
+  // -------------------------------- New Features --------------------------------//
+  // 1. Add public post features
+  static Future<List<Post>> getPublicPosts() async {
+    String apiUrl = '${ApiEndpoint.endpoint}/api/public/posts/';
+    final response = await http.get(
+      Uri.parse(apiUrl), 
+      headers: {'Authorization': 'Bearer $authToken'}, 
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> responseData = json.decode(utf8.decode(response.bodyBytes));
+      return responseData.map((data) => Post.fromJson(data)).toList();
+    } else {
+      // Handle other HTTP error codes
+      throw Exception('Failed to load posts: ${response.statusCode}');
+    }
   }
 
 
