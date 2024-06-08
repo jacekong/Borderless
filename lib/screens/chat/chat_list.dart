@@ -85,9 +85,14 @@ class _ChatListScreenState extends State<ChatListScreen> {
                     ),
                     title: Text(chat.user2.username,
                         style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(
+                    subtitle: const Text('this is a test message from hard coded, so we can see they are the same', style: TextStyle(
+                      fontSize: 12,
+                      overflow: TextOverflow.ellipsis,
+                      color: Colors.grey
+                    ),),
+                    trailing: Text(
                       DateFormatted().formatTimestamp(chat.updatedAt),
-                      style: const TextStyle(color: Colors.grey),
+                      style: const TextStyle(color: Colors.grey, fontSize: 8),
                     ),
                     onTap: () {
                       Navigator.push(

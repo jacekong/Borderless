@@ -27,6 +27,8 @@ class _CreatePostState extends State<CreatePost> {
   List<XFile> images = [];
   File? _video;
 
+  bool isPublic = false;
+
   void _pickVideo() async {
     final video = await imagePicker.pickVideo(source: ImageSource.gallery);
 
@@ -40,17 +42,15 @@ class _CreatePostState extends State<CreatePost> {
     _chewieController?.dispose();
 
     _videoController = VideoPlayerController.file(_video!)
-    ..initialize().then((_) {
-      setState(() {});
-    });
+      ..initialize().then((_) {
+        setState(() {});
+      });
 
     _chewieController = ChewieController(
       videoPlayerController: _videoController!,
       autoPlay: false,
       looping: false,
     );
-    // _videoController?.play();
-    // _videoController?.pause();
   }
 
   void pickImages() async {
@@ -64,7 +64,6 @@ class _CreatePostState extends State<CreatePost> {
         images.addAll(selectedImages);
       });
     }
-
   }
 
   void deleteImage(int index) {
@@ -111,7 +110,6 @@ class _CreatePostState extends State<CreatePost> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final userProfileProvider = Provider.of<UserProfileProvider>(context);
@@ -120,35 +118,35 @@ class _CreatePostState extends State<CreatePost> {
     double screenWidth = MediaQuery.of(context).size.width;
 
     if (userProfile == null) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("創建新的貼文"),
-      ),
-      body: const Center(
-        child: Text("系統出小差啦。。。"),
-      ),
-    );
-  }
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text("創建新的貼文"),
+        ),
+        body: const Center(
+          child: Text("系統出小差啦。。。"),
+        ),
+      );
+    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () => Navigator.pop(context), 
-            icon: const Icon(Icons.cancel),
-          ),
-          elevation: 0,
-          centerTitle: false,
-          title: const Text(
-            "創建新的貼文",
-            style: TextStyle(fontSize: 19),
-          ),
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(Icons.cancel),
+        ),
+        elevation: 0,
+        centerTitle: false,
+        title: const Text(
+          "創建新的貼文",
+          style: TextStyle(fontSize: 19),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             // User avatar and username,
-              Padding(
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Row(
                 children: [
@@ -201,12 +199,10 @@ class _CreatePostState extends State<CreatePost> {
                   child: Padding(
                     padding: EdgeInsets.only(left: screenWidth * 0.007),
                     child: IconButton(
-                        onPressed:  _videoController == null ?
-                         () => pickImages()
-                         :
-                        null,
-                        icon: const Icon(Icons.image),
-                      ),
+                      onPressed:
+                          _videoController == null ? () => pickImages() : null,
+                      icon: const Icon(Icons.image),
+                    ),
                   ),
                 ),
                 // video pick button
@@ -214,38 +210,47 @@ class _CreatePostState extends State<CreatePost> {
                   alignment: Alignment.centerLeft,
                   child: Padding(
                     padding: EdgeInsets.only(left: screenWidth * 0.007),
-                    child: 
-                    // IconButton(
-                    //     onPressed: () {
-                    //       _pickVideo();
-                    //     },
-                    //     icon: const Icon(Icons.video_collection_rounded),
-                    // ),
-                    IconButton(
-                    onPressed: images.isEmpty && _videoController == null
-                        ? () {
-                            _pickVideo();
-                          }
-                        : null, // Disable if images are picked
-                    icon: const Icon(Icons.video_collection_rounded),
-                    color: images.isEmpty && _videoController == null
-                        ? null
-                        : Colors.grey, // Change color if disabled
-                  ),
+                    child: IconButton(
+                      onPressed: images.isEmpty && _videoController == null
+                          ? () {
+                              _pickVideo();
+                            }
+                          : null, // Disable if images are picked
+                      icon: const Icon(Icons.video_collection_rounded),
+                      color: images.isEmpty && _videoController == null
+                          ? null
+                          : Colors.grey, // Change color if disabled
+                    ),
                   ),
                 ),
+                // public post btn
+                Padding(
+                  padding: EdgeInsets.only(left: screenWidth * 0.007),
+                  child: Checkbox(
+                    checkColor: Colors.white,
+                    activeColor: Colors.green,
+                    value: isPublic,
+                    onChanged: (bool? value) {
+                      setState(() {
+                        isPublic = value!;
+                      });
+                    },
+                  ),
+                ),
+                const Text("發布到廣場"),
               ],
             ),
             const SizedBox(
               height: 5,
             ),
             Expanded(
-              child: images.isNotEmpty ? 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: ReorderableGridView.builder(
+              child: images.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ReorderableGridView.builder(
                         itemCount: images.length,
-                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 3, // Number of columns
                           crossAxisSpacing: 8,
                           mainAxisSpacing: 8,
@@ -285,51 +290,56 @@ class _CreatePostState extends State<CreatePost> {
                           });
                         },
                       ),
-              )
-              : _videoController != null && _videoController!.value.isInitialized
-                    ? _videoController!.value.isInitialized
-                        ? AspectRatio(
-                            aspectRatio: _videoController!.value.aspectRatio,
-                            child: Stack(children: [
-                                Chewie(controller: _chewieController!,),
-                                // Delete video button
-                                if (_videoController != null)
-                                  Positioned(
-                                    top: 3,
-                                    right: 3,
-                                    child: Padding(
-                                    padding: EdgeInsets.only(left: screenWidth * 0.007),
-                                    child: IconButton(
-                                        onPressed: () => deleteVideo(),
-                                        icon: Container(
-                                          width: 30,
-                                          height: 30,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(50),
-                                            color: Colors.black,
-                                          ),
-                                          child: const Icon(
-                                            Icons.delete_forever, 
-                                            color: Colors.white,
+                    )
+                  : _videoController != null &&
+                          _videoController!.value.isInitialized
+                      ? _videoController!.value.isInitialized
+                          ? AspectRatio(
+                              aspectRatio: _videoController!.value.aspectRatio,
+                              child: Stack(
+                                children: [
+                                  Chewie(
+                                    controller: _chewieController!,
+                                  ),
+                                  // Delete video button
+                                  if (_videoController != null)
+                                    Positioned(
+                                      top: 3,
+                                      right: 3,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                            left: screenWidth * 0.007),
+                                        child: IconButton(
+                                          onPressed: () => deleteVideo(),
+                                          icon: Container(
+                                            width: 30,
+                                            height: 30,
+                                            decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(50),
+                                              color: Colors.black,
+                                            ),
+                                            child: const Icon(
+                                              Icons.delete_forever,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                              ],
-                            ),
-                          )
-                        : const Center(child: CircularProgressIndicator())
-                    : const Center(child: Text('選一張你喜歡的相片吧～')),
-
+                                ],
+                              ),
+                            )
+                          : const Center(child: CircularProgressIndicator())
+                      : const Center(child: Text('選一張你喜歡的相片吧～')),
             ),
             // post button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                   backgroundColor: Theme.of(context).colorScheme.secondary),
               onPressed: () async {
-                await ApiService.uploadPost(
-                    context, authToken!, _captionController.text, images, _video);
+                await ApiService.uploadPost(context, authToken!,
+                    _captionController.text, images, _video, isPublic);
                 // After successfully creating the post, pop the create post window
                 _captionController.clear();
                 images.clear();
@@ -348,6 +358,5 @@ class _CreatePostState extends State<CreatePost> {
         ),
       ),
     );
-  } 
-
+  }
 }

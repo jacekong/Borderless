@@ -13,7 +13,7 @@ class SearchFriend extends StatefulWidget {
 
 class _SearchFriendState extends State<SearchFriend> {
   final TextEditingController _searchController = TextEditingController();
-
+  final FocusNode _focusNode = FocusNode();
   List<UserProfile> _searchResults = [];
 
   @override
@@ -25,6 +25,7 @@ class _SearchFriendState extends State<SearchFriend> {
   @override
   void dispose() {
     _searchController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 
@@ -49,6 +50,7 @@ class _SearchFriendState extends State<SearchFriend> {
                   borderRadius: BorderRadius.circular(7)
                 ),
                 child: TextField(
+                  focusNode: _focusNode,
                   onTapOutside: ((event) {
               FocusScope.of(context).unfocus();
             }),
