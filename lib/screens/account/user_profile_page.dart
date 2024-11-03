@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:borderless/model/posts.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:page_transition/page_transition.dart';
 
 class UserProfilePage extends StatefulWidget {
   final UserProfile userProfile;
@@ -28,8 +29,9 @@ class _UserProfilePageState extends State<UserProfilePage> {
   void _navigateToDetailPage(Post post) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => PostDetails(post: post),
+      PageTransition(
+        type: PageTransitionType.bottomToTop,
+        child: PostDetails(post: post),
       ),
     );
   }
@@ -165,10 +167,15 @@ class _UserProfilePageState extends State<UserProfilePage> {
                                     : Container(
                                         // Placeholder when no images are available
                                         color: Colors.grey[200],
-                                        child: const Center(
+                                        child: Center(
                                           child: Text(
-                                            'No Image',
-                                            style: TextStyle(color: Colors.grey),
+                                            softWrap: true,
+                                          overflow: TextOverflow.fade,
+                                          post.content,
+                                          style: const TextStyle(
+                                            color: Colors.grey,
+                                            fontSize: 7,
+                                          ),
                                           ),
                                         ),
                                       ),

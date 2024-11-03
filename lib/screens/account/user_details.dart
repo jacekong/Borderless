@@ -33,8 +33,8 @@ class UserDetailPage extends StatelessWidget {
               child: Text(
                 user.username,
                 style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
                     fontFamily: 'Roboto'),
               ),
             ),
@@ -46,7 +46,17 @@ class UserDetailPage extends StatelessWidget {
                   FriendRequestStatus status = statusProvider.getStatus();
                   bool isFriendRequestSent =
                       status.isFriendRequestSent(user.id);
-                  return TextButton(
+                  return ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.resolveWith<Color>(
+                        (Set<WidgetState> states) {
+                          if (states.contains(WidgetState.pressed)) {
+                            return Colors.green; // Color when the button is pressed
+                          }
+                          return Colors.blue; // Default color
+                        },
+                      ),
+                    ),
                     onPressed: () {
                       if (isFriendRequestSent) {
                         // Cancel friend request
@@ -57,7 +67,7 @@ class UserDetailPage extends StatelessWidget {
                       }
                     },
                     child: Text(
-                      isFriendRequestSent ? 'Cancel' : 'Add Friend',
+                      isFriendRequestSent ? '取消添加' : '添加好友',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                       ),

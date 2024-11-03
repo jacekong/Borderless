@@ -1,5 +1,6 @@
 import 'package:borderless/api/api_service.dart';
 import 'package:borderless/model/chat_list.dart';
+import 'package:borderless/model/chatlist_with_msg.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/chat/chat_page.dart';
@@ -17,7 +18,8 @@ class ChatListScreen extends StatefulWidget {
 }
 
 class _ChatListScreenState extends State<ChatListScreen> {
-  late Future<List<ChatListModel>> _chatlist;
+  late Future<Map<String, dynamic>> _chatlist;
+  List<ChatListWithHistory> chatHistories = [];
 
   @override
   void initState() {
@@ -29,6 +31,19 @@ class _ChatListScreenState extends State<ChatListScreen> {
     setState(() {
       _chatlist = ApiService.getChatList();
     });
+  }
+
+  String getLatestMessage(ChatListWithHistory chatHistory) {
+    if (chatHistory.chatHistory.isEmpty) {
+      return 'No messages yet';
+    }
+    // Get the latest message
+    final latestMessage = chatHistory.chatHistory.reduce((a, b) {
+      final aTimestamp = DateTime.parse(a.timestamp);
+      final bTimestamp = DateTime.parse(b.timestamp);
+      return aTimestamp.isAfter(bTimestamp) ? a : b;
+    });
+    return latestMessage.message;
   }
 
   @override
@@ -54,7 +69,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       body: RefreshIndicator(
         color: Colors.green,
         onRefresh: _refreshChatlist,
-        child: FutureBuilder<List<ChatListModel>>(
+        child: FutureBuilder<Map<String, dynamic>>(
           future: _chatlist,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
@@ -74,18 +89,21 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   },
                   child: const Center(child: Text('去跟朋友問個好吧～')));
             } else {
-              final List<ChatListModel> chatlist = snapshot.data!;
+              final chatLists = snapshot.data!['chatLists'] as List<ChatListModel>;
+              final chatHistories = snapshot.data!['chatHistories'] as List<ChatListWithHistory>;
               return ListView.builder(
-                itemCount: chatlist.length,
+                itemCount: chatLists.length,
                 itemBuilder: (context, index) {
-                  final chat = chatlist[index];
+                  final chat = chatLists[index];
+                  final chatHistory = chatHistories.firstWhere((history) => history.chatList.id == chat.id);
+                  final latestMessage = getLatestMessage(chatHistory);
                   return ListTile(
                     leading: CircleAvatar(
                       backgroundImage: NetworkImage(chat.user2.avatar),
                     ),
                     title: Text(chat.user2.username,
                         style: const TextStyle(fontSize: 18)),
-                    subtitle: const Text('this is a test message from hard coded, so we can see they are the same', style: TextStyle(
+                    subtitle: Text(latestMessage, style: const TextStyle(
                       fontSize: 12,
                       overflow: TextOverflow.ellipsis,
                       color: Colors.grey
@@ -99,7 +117,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         context,
                         PageTransition(
                           type: PageTransitionType.bottomToTop,
-                          child: ChatPage(friend: chatlist[index].user2),
+                          child: ChatPage(friend: chat.user2),
                         ),
                       );
                     },

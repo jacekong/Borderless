@@ -14,7 +14,6 @@ import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:record_mp3/record_mp3.dart';
 import 'package:borderless/api/api_service.dart';
 import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/websocket_api.dart';
@@ -25,6 +24,7 @@ import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/utils/audio_controller.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:borderless/utils/image_preview.dart';
+import 'package:record/record.dart';
 
 class ChatPage extends StatefulWidget {
   final UserProfile friend;
@@ -67,6 +67,9 @@ class _ChatPageState extends State<ChatPage> {
 
   DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
+  // audio recorder
+  final recorder = AudioRecorder();
+
   Future<bool> checkPermission() async {
     if (!await Permission.microphone.isGranted) {
       PermissionStatus status = await Permission.microphone.request();
@@ -78,24 +81,52 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void startRecord() async {
-    bool hasPermission = await checkPermission();
-    if (hasPermission) {
+    // bool hasPermission = await checkPermission();
+    // if (hasPermission) {
+    //   recordFilePath = await getFilePath();
+    //   RecordMp3.instance.start(recordFilePath, (type) {
+    //     setState(() {});
+    //   });
+    // } else {}
+    // setState(() {});
+    if (await recorder.hasPermission()) {
       recordFilePath = await getFilePath();
-      RecordMp3.instance.start(recordFilePath, (type) {
-        setState(() {});
-      });
-    } else {}
+    
+    // Start recording with a specific configuration
+    await recorder.start(
+      const RecordConfig(
+        encoder: AudioEncoder.aacLc, // Choose the appropriate encoder
+        bitRate: 128000, // Optional bit rate
+        sampleRate: 44100, // Optional sample rate
+      ),
+      path: recordFilePath, // The file path where the recording will be saved
+    );
+    setState(() {});
+  }
     setState(() {});
   }
 
   void stopRecord() async {
-    bool stop = RecordMp3.instance.stop();
+    // bool stop = RecordMp3.instance.stop();
+    // audioController.end.value = DateTime.now();
+    // audioController.calcDuration();
+    // var ap = AudioPlayer();
+    // await ap.play(AssetSource("sound2.mp3"));
+    // ap.onPlayerComplete.listen((a) {});
+    // if (stop) {
+    //   audioController.isRecording.value = false;
+    //   audioController.isSending.value = true;
+    //   await uploadAudio();
+    //   setState(() {});
+    // }
+    final path = await recorder.stop();
     audioController.end.value = DateTime.now();
     audioController.calcDuration();
     var ap = AudioPlayer();
     await ap.play(AssetSource("sound2.mp3"));
     ap.onPlayerComplete.listen((a) {});
-    if (stop) {
+
+    if (path != null) {
       audioController.isRecording.value = false;
       audioController.isSending.value = true;
       await uploadAudio();
@@ -380,6 +411,7 @@ class _ChatPageState extends State<ChatPage> {
     _textEditingController.dispose();
     _webSocketService.closeWebSocket();
     audioPlayer.dispose();
+    recorder.dispose();
     NotificationManager.removeUserId();
     super.dispose();
   }

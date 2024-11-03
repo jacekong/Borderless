@@ -4,6 +4,7 @@ import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/api_endpoint.dart';
 import 'package:borderless/model/chat_list.dart';
 import 'package:borderless/model/chat_history.dart';
+import 'package:borderless/model/chatlist_with_msg.dart';
 import 'package:borderless/model/friend_request.dart';
 import 'package:borderless/model/post_comment.dart';
 import 'package:borderless/model/posts.dart';
@@ -210,48 +211,44 @@ class ApiService {
 
   // create post
   static Future<void> uploadPost(context,String authToken, String caption, List<XFile> images, File? video, bool isPublic) async {
-
-    if (context.mounted) {
-          CustomSnackbar.show(
-          context: context, 
-          message: "正在發送喔，一下下就好～", 
-          backgroundColor: Colors.blue,
-        );
-    }
     // Create a multipart request
-
-    final request = http.MultipartRequest('POST', Uri.parse('${ApiEndpoint.endpoint}/api/posts'));
-    
-    // Set authorization header
-    request.headers['Authorization'] = 'Bearer $authToken';
-    
-    // Add caption field
-    request.fields['post_content'] = caption;
-
-    // public post
-    if (isPublic == true) {
-      request.fields['is_public'] = '1';
-    }
-
-    // Add image files
-    for (int i = 0; i < images.length; i++) {
-      request.files.add(await http.MultipartFile.fromPath('post_images', images[i].path));
-    }
-
-    // add video files
-    if (video != null) {
-      request.files.add(await http.MultipartFile.fromPath(
-          'post_video',
-          video.path,
-      ));
-    }
-
-
-    // Send the request
-    final response = await request.send();
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('正在發送喔，請稍等～'),
+        // duration: Duration(seconds: 3),
+        backgroundColor: Colors.blue,
+      ),
+    );
 
     try {
-        // Check the response status 201 created 
+        final request = http.MultipartRequest('POST', Uri.parse('${ApiEndpoint.endpoint}/api/posts'));
+      
+      // Set authorization header
+      request.headers['Authorization'] = 'Bearer $authToken';
+      
+      // Add caption field
+      request.fields['post_content'] = caption;
+
+      // public post
+      if (isPublic == true) {
+        request.fields['is_public'] = '1';
+      }
+
+      // Add image files
+      for (int i = 0; i < images.length; i++) {
+        request.files.add(await http.MultipartFile.fromPath('post_images', images[i].path));
+      }
+
+      // add video files
+      if (video != null) {
+        request.files.add(await http.MultipartFile.fromPath(
+            'post_video',
+            video.path,
+        ));
+      }
+
+      final response = await request.send();
+
       if (response.statusCode == 201) {
         // loading screen
         if (context.mounted) {
@@ -260,10 +257,6 @@ class ApiService {
           message: "創建成功了🦆!!!", 
           backgroundColor: Colors.green,
         );
-        }
-
-        if (context.mounted) {
-          Navigator.of(context).pop();
         }
     
       } else {
@@ -285,7 +278,7 @@ class ApiService {
         );
       }
     }
-    
+
   }
   // delete a post
   // delete response code 204
@@ -475,24 +468,35 @@ class ApiService {
   }
 
   // get chat list
-  static Future<List<ChatListModel>> getChatList() async {
+  static Future<Map<String, dynamic>> getChatList() async {
     final String url = '${ApiEndpoint.endpoint}/api/chatlists/';
 
     try {
-      final response = await http.get(
-        Uri.parse(url),
-        headers: {'Authorization': 'Bearer $authToken'}, 
-      );
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {'Authorization': 'Bearer $authToken'}, 
+    );
 
-      if (response.statusCode == 200) {
-        final List<dynamic> data = json.decode(utf8.decode(response.bodyBytes));
-        return data.map((item) => ChatListModel.fromJson(item)).toList();
-      } else {
-        throw Exception('Failed to load chat');
-      }      
-    } catch (e) {
-      rethrow;
-    }
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+
+      final List<ChatListModel> chatLists = (data['chat_lists'] as List)
+          .map((i) => ChatListModel.fromJson(i))
+          .toList();
+
+      final List<ChatListWithHistory> chatHistories = (data['chat_histories'] as List)
+          .map((i) => ChatListWithHistory.fromJson(i))
+          .toList();
+
+      return {'chatLists': chatLists, 'chatHistories': chatHistories};
+    } else if (response.statusCode == 401) {
+      throw Exception('Unauthorized: Access token expired or invalid');
+    } else {
+      throw Exception('Failed to load chat lists. Status code: ${response.statusCode}');
+    }      
+  } catch (e) {
+    throw Exception('Failed to load chat lists. Error: $e');
+  }
 
   }
 

@@ -10,19 +10,18 @@ class DateFormatted {
 
       if (isSameDay(timestamp, now)) {
         // If the timestamp is from today
-        return DateFormat.jm().format(timestamp.toLocal()); // Format "Today + time"
+        return DateFormat.Hm().format(timestamp.toLocal()); // Format "Today + time"
       } else if (isSameDay(timestamp, yesterday)) {
         // If the timestamp is from yesterday
-        return '昨天 ${DateFormat.jm().format(timestamp.toLocal())}'; // Format "Yesterday + time"
+        return '昨天 ${DateFormat.Hm().format(timestamp.toLocal())}'; // Format "Yesterday + time"
       } else {
         // For all other dates
-        return DateFormat.MMMd().add_jm().format(timestamp.toLocal()); // Format "date + time"
+        return DateFormat.MMMd().add_Hm().format(timestamp.toLocal()); // Format "date + time"
       }
     } catch (e) {
       return ''; // Return empty string if there's an error parsing the timestamp
     }
   }
-  
   
   bool isSameDay(DateTime date1, DateTime date2) {
     return date1.year == date2.year &&

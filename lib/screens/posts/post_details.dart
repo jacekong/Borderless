@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:borderless/api/api_service.dart';
 import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/websocket_api.dart';
@@ -6,6 +7,7 @@ import 'package:borderless/api/websocket_service.dart';
 import 'package:borderless/model/posts.dart';
 import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
+import 'package:borderless/utils/gen_thumbnail.dart';
 import 'package:borderless/utils/image_preview.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:borderless/utils/pixel_placeholder.dart';
@@ -36,6 +38,8 @@ class _PostDetailsState extends State<PostDetails> {
 
   VideoPlayerController? videoPlayerController;
   ChewieController? chewieController;
+
+  final Map<String, ChewieController> _chewieControllers = {};
 
   final String? token = AuthManager.getAuthToken();
 
@@ -141,6 +145,7 @@ class _PostDetailsState extends State<PostDetails> {
     _webSocketService.closeWebSocket();
     videoPlayerController?.dispose();
     chewieController?.dispose();
+    _chewieControllers.forEach((key, controller) => controller.dispose());
     super.dispose();
   }
 
@@ -310,7 +315,7 @@ class _PostDetailsState extends State<PostDetails> {
           // video,
           if (widget.post.postVideo.isNotEmpty)
             Expanded(
-              flex: 1,
+              flex: 2,
               child: Padding(
                 padding: const EdgeInsets.all(5.0),
                 child: Container(
@@ -326,15 +331,87 @@ class _PostDetailsState extends State<PostDetails> {
                     itemCount: widget.post.postVideo.length,
                     itemBuilder: (context, videoIndex) {
                       final videoUrl = widget.post.postVideo[videoIndex].video;
-                      final videoPlayerController =
-                          VideoPlayerController.networkUrl(Uri.parse(videoUrl));
-                      final chewieController = ChewieController(
-                        videoPlayerController: videoPlayerController,
-                        autoPlay: false,
-                        looping: false,
-                      );
-                      return Chewie(
-                        controller: chewieController,
+                      final postId = widget.post.id;
+                      // final videoPlayerController =
+                      //     VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+                      // final chewieController = ChewieController(
+                      //   videoPlayerController: videoPlayerController,
+                      //   autoPlay: false,
+                      //   looping: false,
+                      // );
+                      // return Chewie(
+                      //   controller: chewieController,
+                      // );
+                      return FutureBuilder<String>(
+                        future: VideoThumbnailUtil.generateThumbnail(
+                            videoUrl, postId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Container(
+                              color: Colors.blueGrey,
+                              child: const Center(
+                                  child: CircularProgressIndicator()),
+                            );
+                          } else if (snapshot.hasError ||
+                              !snapshot.hasData ||
+                              snapshot.data!.isEmpty) {
+                            return Container(
+                              color: Colors.grey[200],
+                              child: const Center(child: Icon(Icons.error)),
+                            );
+                          } else {
+                            return GestureDetector(
+                          onTap: () {
+                            if (!_chewieControllers.containsKey(videoUrl)) {
+                              final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+                              final chewieController = ChewieController(
+                                videoPlayerController: videoPlayerController,
+                                autoPlay: false,
+                                looping: false,
+                              );
+
+                              setState(() {
+                                _chewieControllers[videoUrl] = chewieController;
+                              });
+                            } else {
+                              setState(() {
+                                _chewieControllers[videoUrl]!.play();
+                              });
+                            }
+                          },
+                          child: Stack(
+                            children: [
+                              Image.file(
+                                File(snapshot.data!),
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
+                              if (!_chewieControllers.containsKey(videoUrl) || !_chewieControllers[videoUrl]!.isPlaying)
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  right: 0,
+                                  bottom: 0,
+                                  child: Container(
+                                    color: Colors.black.withOpacity(0.3),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.play_arrow,
+                                        color: Colors.white,
+                                        size: 50,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              if (_chewieControllers.containsKey(videoUrl))
+                                Chewie(controller: _chewieControllers[videoUrl]!),
+                            ],
+                          ),
+                        );
+                          }
+                        },
                       );
                     },
                   ),

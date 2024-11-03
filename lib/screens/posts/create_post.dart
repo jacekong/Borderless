@@ -341,9 +341,9 @@ class _CreatePostState extends State<CreatePost> {
                 await ApiService.uploadPost(context, authToken!,
                     _captionController.text, images, _video, isPublic);
                 // After successfully creating the post, pop the create post window
-                _captionController.clear();
-                images.clear();
-                deleteVideo();
+                // _captionController.clear();
+                // images.clear();
+                // deleteVideo();
               },
               child: Padding(
                 padding: const EdgeInsets.only(left: 32, right: 32),

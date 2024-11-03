@@ -43,7 +43,7 @@ class _SearchFriendState extends State<SearchFriend> {
         body: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(5.0),
               child: Container(
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.tertiary,
@@ -79,13 +79,6 @@ class _SearchFriendState extends State<SearchFriend> {
                           NetworkImage(_searchResults[index].avatar),
                     ),
                     onTap: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) =>
-                      //         USerDetailPage(user: _searchResults[index]),
-                      //   ),
-                      // );
                       Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: UserDetailPage(user: _searchResults[index]),));
                     },
                   );

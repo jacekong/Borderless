@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+import 'package:borderless/utils/gen_thumbnail.dart';
 import 'package:borderless/utils/page_animation.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +95,7 @@ class _SettingsState extends State<Settings>
                             userProfile.username,
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.secondary,
-                                fontSize: 24,
+                                fontSize: 20,
                                 fontWeight: FontWeight.normal),
                           ),
                         ),
@@ -209,6 +211,64 @@ class _SettingsState extends State<Settings>
                                           const Icon(Icons.error),
                                       fit: BoxFit.cover,
                                     )
+                                    : post.postVideo.isNotEmpty
+                                        ? FutureBuilder<String>(
+                                            future: VideoThumbnailUtil.generateThumbnail(post.postVideo[0].video, post.id),
+                                            builder: (context, snapshot) {
+                                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                                return Container(
+                                                  color: Colors.blueGrey,
+                                                  child: const Center(child: CircularProgressIndicator()),
+                                                );
+                                              } else if (snapshot.hasError || !snapshot.hasData) {
+                                                return Container(
+                                                  color: Colors.grey[200],
+                                                  child: Center(
+                                                    child: Text(
+                                                      post.content,
+                                                      softWrap: true,
+                                                      overflow: TextOverflow.fade,
+                                                      style: const TextStyle(color: Colors.grey, fontSize: 7),
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                return Stack(
+                                                  children: [
+                                                    Image.file(
+                                                            File(snapshot.data!),
+                                                            fit: BoxFit.cover,
+                                                            width: double.infinity,
+                                                            height: double.infinity,
+                                                          ),
+                                                    Positioned(
+                                                          top: 0,
+                                                          left: 0,
+                                                          right: 0,
+                                                          bottom: 0,
+                                                          child: Center(
+                                                            child: Opacity(
+                                                              opacity: 0.7,
+                                                              child: Container(
+                                                                width: 30,
+                                                                height: 30,
+                                                                decoration: BoxDecoration(
+                                                                  color: Colors.black,
+                                                                  borderRadius: BorderRadius.circular(50),
+                                                                ),
+                                                                child: const Icon(
+                                                                  Icons.play_arrow,
+                                                                  color: Colors.white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                  ]
+                                                );
+                                              }
+                                            },
+                                          )
                                   :
                                   Container(
                                       // Placeholder when no images are available
