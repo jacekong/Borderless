@@ -13,7 +13,6 @@ dependencies:
   cached_network_image: ^3.1.0
   chewie: ^1.8.1
   cupertino_icons: ^1.0.6
-  device_info_plus: ^10.0.1
   file_picker: ^8.0.3
   flutter:
     sdk: flutter
@@ -27,9 +26,10 @@ dependencies:
   fluttertoast: ^8.2.4
   get: ^4.6.6
   http: ^1.2.1
-  image_gallery_saver: ^2.0.3
   image_picker: ^1.0.7
-  intl: ^0.19.0
+  flutter_localizations:
+    sdk: flutter
+  intl: any
   just_audio: ^0.9.37
   jwt_decoder: ^2.0.1
   logger: ^2.2.0
@@ -47,7 +47,6 @@ dependencies:
   shared_preferences: ^2.2.2
   sizer: ^2.0.15
   video_player: ^2.8.6
-  video_thumbnail: ^0.5.3
   web_socket_channel: ^3.0.0
 
 dev_dependencies:
@@ -57,6 +56,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
   assets:
     - .env
@@ -64,6 +64,9 @@ flutter:
     - assets/images/
     - assets/images/animated-bell.gif
     - assets/ca/lets-encrypt-r3.pem
+    - assets/icons/
+    - assets/icons/chat.png
+    - assets/icons/comment.png
 
   fonts:
     - family: Roboto

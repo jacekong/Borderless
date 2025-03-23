@@ -5,6 +5,7 @@ import 'package:borderless/provider/friend_request_provider.dart';
 import 'package:borderless/utils/snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UserDetailPage extends StatelessWidget {
   final UserProfile user;
@@ -17,7 +18,7 @@ class UserDetailPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("用戶詳情"),
+        title: Text(AppLocalizations.of(context)!.userDetail),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 7),
@@ -67,7 +68,7 @@ class UserDetailPage extends StatelessWidget {
                       }
                     },
                     child: Text(
-                      isFriendRequestSent ? '取消添加' : '添加好友',
+                      isFriendRequestSent ? AppLocalizations.of(context)!.cancel : AppLocalizations.of(context)!.addFriend,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                       ),

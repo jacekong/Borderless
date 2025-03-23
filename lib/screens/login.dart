@@ -1,10 +1,15 @@
 import 'package:borderless/api/login_api.dart';
 import 'package:borderless/screens/account/register.dart';
+import 'package:borderless/theme/theme_provider.dart';
+import 'package:borderless/utils/language_selection.dart';
 import 'package:borderless/utils/notification_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   final Function onLoginSuccess;
+
   const LoginScreen({super.key, required this.onLoginSuccess});
 
   @override
@@ -24,19 +29,6 @@ class _LoginScreenState extends State<LoginScreen> {
       _loggingIn = true;
     });
 
-    // try {
-    //   await loginUser(
-    //       context, _emailController.text, _passwordController.text);
-    // } finally {
-     
-    //  if (mounted) {
-
-    //     setState(() {
-    //       _loggingIn = false;
-    //     });
-    //  }
-      
-    // }
     try {
       final isLoggedIn = await loginUser(
           context, _emailController.text, _passwordController.text);
@@ -99,11 +91,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         autofocus: false,
                         style: TextStyle(color: Theme.of(context).colorScheme.secondary),
                         onChanged: (String text) {},
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           border: InputBorder.none,
-                          prefixIcon: Icon(Icons.person),
-                          hintText: '郵箱',
-                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: const Icon(Icons.person),
+                          hintText: AppLocalizations.of(context)!.email,
+                          hintStyle: const TextStyle(color: Colors.grey),
                         ),
                       ),
                     ),
@@ -141,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   : Icons.visibility_off,
                             ),
                           ),
-                          hintText: '密碼',
+                          hintText: AppLocalizations.of(context)!.password,
                           hintStyle: const TextStyle(color: Colors.grey),
                           border: InputBorder.none
                         ),
@@ -162,7 +154,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         foregroundColor: Colors.blue,
                       ),
                       onPressed: () {},
-                      child: const Text('忘記密碼?'),
+                      child: Text(AppLocalizations.of(context)!.forgetPassword),
                     ),
                     // register
                     TextButton(
@@ -179,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                         );
                       },
-                      child: const Text('註冊'),
+                      child: Text(AppLocalizations.of(context)!.register),
                     ),
                   ],
                 ),
@@ -205,13 +197,52 @@ class _LoginScreenState extends State<LoginScreen> {
                           _loginUser();
                         },
                         child: Text(
-                          _loggingIn ? '登錄中, 請稍等...' : '登錄',
+                          _loggingIn ? '登錄中, 請稍等...' : AppLocalizations.of(context)!.login,
                           style: const TextStyle(color: Colors.white),
                         ),
                       ),
                     ),
                   ),
                 ),
+                const SizedBox(height: 50.0),
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            context.read<ThemeProvider>().selectLightTheme(ThemeType.light);
+                          },
+                          child: context.watch<ThemeProvider>().themeType == ThemeType.light 
+                          ? const Icon(Icons.light_mode) :
+                          const Icon(Icons.light_mode_outlined),
+                        ),
+                        const SizedBox(height: 7,),
+                        Text(AppLocalizations.of(context)!.lightMode)
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            context.read<ThemeProvider>().selectDarkTheme(ThemeType.dark);
+                          },
+                          child: context.watch<ThemeProvider>().themeType == ThemeType.dark ?
+                          const Icon(Icons.dark_mode) :
+                          const Icon(Icons.dark_mode_outlined),
+                        ),
+                        const SizedBox(height: 7,),
+                        Text(AppLocalizations.of(context)!.darkmode)
+                      ],
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 50),
+                  child: LanguageSelection(),
+                )
               ],
             ),
           ),

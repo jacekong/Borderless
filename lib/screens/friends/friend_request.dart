@@ -2,6 +2,7 @@ import 'package:borderless/api/api_service.dart';
 import 'package:borderless/provider/request_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FriendRequestList extends StatefulWidget {
   const FriendRequestList({super.key});
@@ -23,7 +24,7 @@ class _FriendRequestListState extends State<FriendRequestList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("朋友邀請"),
+        title: Text(AppLocalizations.of(context)!.friendRequest),
         centerTitle: true,
       ),
       body: Consumer<FriendRequestProvider>(
@@ -35,7 +36,7 @@ class _FriendRequestListState extends State<FriendRequestList> {
 
         // Check if there are no friend requests
         if (friendRequestProvider.friendRequests.isEmpty) {
-          return const Center(child: Text('暫時沒有邀請'));
+          return Center(child: Text(AppLocalizations.of(context)!.noRequest));
         }
 
         return ListView.builder(

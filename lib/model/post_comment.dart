@@ -6,6 +6,9 @@ class PostCommentModel {
   final String comment;
   final String post;
   final String timestamp;
+  final int? parent;
+  final bool is_visible;
+  final bool is_deleted;
 
   PostCommentModel({
     required this.id,
@@ -13,6 +16,9 @@ class PostCommentModel {
     required this.comment,
     required this.post,
     required this.timestamp,
+    this.parent,
+    required this.is_visible,
+    required this.is_deleted
   });
 
   factory PostCommentModel.fromJson(Map<String, dynamic> json) {
@@ -22,6 +28,9 @@ class PostCommentModel {
       comment: json['comment'],
       post: json['post'],
       timestamp: json['timestamp'],
+      parent: json['parent'],
+      is_visible: json['is_visible'],
+      is_deleted: json['is_deleted'],
     );
   }
 }

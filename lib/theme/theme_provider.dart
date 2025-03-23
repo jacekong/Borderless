@@ -18,6 +18,18 @@ class ThemeProvider extends ChangeNotifier {
     await _saveThemeToPreferences();
   }
 
+  void selectLightTheme(ThemeType light) async {
+    _themeType = _themeType == light? ThemeType.light : ThemeType.light;
+    notifyListeners();
+    await _saveThemeToPreferences();
+  }
+
+  void selectDarkTheme(ThemeType dark) async {
+    _themeType = _themeType == dark ? ThemeType.dark : ThemeType.dark;
+    notifyListeners();
+    await _saveThemeToPreferences();
+  }
+
   Future<void> _loadThemeFromPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     int? themeIndex = prefs.getInt('themeType');

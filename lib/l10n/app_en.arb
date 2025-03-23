@@ -1,0 +1,171 @@
+{
+    "@@locale": "en",
+    "newPost": "New post",
+    "@newPost": {
+        "description": "Crete a new post"
+    },
+    "whatOnYourMind": "What's on your mind?",
+    "@whatOnYourMind": {
+        "description": "Hint text fot creating post"
+    },
+    "postToPublic": "Everyone can see",
+    "@postToPublic": {
+        "description": "Public post"
+    },
+    "selectImage": "Choose a picture you like ~",
+    "@selectImage": {
+        "description": "Select a image"
+    },
+    "sendPost": "Post",
+    "@sendPost": {
+        "description": "Post new post"
+    },
+    "following": "Following",
+    "@following": {
+        "description": "Following friends moments"
+    },
+    "forYou": "For you",
+    "@forYou": {
+        "description": "Public posts"
+    },
+    "comment": "Comment",
+    "@comment": {
+        "description": "Comment on post"
+    },
+    "typeMessage": "Type your message",
+    "@typeMessage": {
+        "description": "Type a message"
+    },
+    "searchFriend": "Search Friends",
+    "@searchFriend": {
+        "description": "Saerch a friend"
+    },
+    "searchByname": "Input name or id",
+    "@searchByname": {
+        "description": "Input name or id"
+    },
+    "friendList": "Friend List",
+    "@friendList": {
+        "description": "Friend list"
+    },
+    "friendRequest": "Friend Request",
+    "@friendRequest": {
+        "description": "Friend Request"
+    },
+    "myFriend": "My Friend",
+    "@myFriend": {
+        "description": "My friend"
+    },
+    "noRequest": "No Friend Request",
+    "@noRequest": {
+        "description": "No Friend Request"
+    },
+    "myAccount": "My Account",
+    "@myAccount": {
+        "description": "My Account"
+    },
+    "updateProfile": "Update Profile",
+    "@updateProfile": {
+        "description": "Update profile"
+    },
+    "changeAvatar": "Change Avatar",
+    "@changeAvatar": {
+        "description": "Change avatar"
+    },
+    "userName": "User Name",
+    "@userName": {
+        "description": "User name"
+    },
+    "email": "Email",
+    "@email": {
+        "description": "Email"
+    },
+    "bio": "Bio",
+    "@bio": {
+        "description": "Bio"
+    },
+    "confirm": "Confirm",
+    "@confirm": {
+        "description": "Confirm"
+    },
+    "myProfile": "My Profile",
+    "@myProfile": {
+        "description": "My profile"
+    },
+    "privacy": "Privacy",
+    "@privacy": {
+        "description": "Privacy setting"
+    },
+    "darkmode": "Dark Mode",
+    "@darkmode": {
+        "description": "dark mode"
+    },
+    "lightMode": "Light Mode",
+    "@lightMode": {
+        "description": "Light mode"
+    },
+    "logout": "Logout",
+    "@logout": {
+        "description": "Logout user"
+    },
+    "delete": "Delete",
+    "@delete": {
+        "description": "Delete post"
+    },
+    "register": "Register",
+    "@register": {
+        "description": "Register user"
+    },
+    "forgetPassword": "Forget Password",
+    "@forgetPassword": {
+        "description": "Forget password"
+    },
+    "password": "Password",
+    "@password": {
+        "description": "Password"
+    },
+    "login": "Login",
+    "@login": {
+        "description": "Login user"
+    },
+    "createUser": "Create a new account",
+    "@createUser": {
+        "description": "Create a new user"
+    },
+    "chooseAvatar": "Choose an avatar you like ~",
+    "@chooseAvatar": {
+        "description": "Choose an avatar you like"
+    },
+    "confirmPassword": "Confirm your password",
+    "@confirmPassword": {
+        "description": "Confirm your password"
+    },
+    "message": "Message",
+    "@message": {
+        "description": "send a message"
+    },
+    "userDetail": "User Detail",
+    "@userDetail": {
+        "description": "User Details"
+    },
+    "addFriend": "Add Friend",
+    "@addFriend": {
+        "description": "Add a friend"
+    },
+    "acceptFriend": "Accept",
+    "@acceptFriend": {
+        "description": "Accept a friend request"
+    },
+    "refuse": "Refuse",
+    "@refuse": {
+        "description": "Refuse a friend request"
+    },
+    "cancel": "Cancel",
+    "@cancel": {
+        "description": "Cacnel a friend request"
+    },
+    "post": "Post",
+    "@post": {
+        "description": "Post"
+    }
+}

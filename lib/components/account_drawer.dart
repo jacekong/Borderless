@@ -1,9 +1,11 @@
 import 'package:borderless/api/auth_manager.dart';
 import 'package:borderless/api/logout.dart';
 import 'package:borderless/theme/theme_provider.dart';
+import 'package:borderless/utils/language_selection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountDrawer extends StatefulWidget {
 
@@ -23,27 +25,49 @@ class _AccountDrawerState extends State<AccountDrawer> {
           children: [
             Column(
               children: [
-                const DrawerHeader(child: Text("我的帳戶")),
-                const ListTile(
-                  leading: Icon(Icons.person_2_sharp),
-                  title: Text("我的資料"),
-                ),
-                const ListTile(
-                  leading: Icon(Icons.privacy_tip),
-                  title: Text("隱私設置"),
+                DrawerHeader(child: Text(AppLocalizations.of(context)!.myAccount)),
+                ListTile(
+                  leading: const Icon(Icons.person_2_sharp),
+                  title: Text(AppLocalizations.of(context)!.myProfile),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.nightlight_outlined),
-                  title: ElevatedButton(
-                    onPressed: () { Provider.of<ThemeProvider>(context, listen: false).toggleTheme(); },
-                    child: Text("夜間模式", style: TextStyle(color: Theme.of(context).colorScheme.secondary),),
+                  leading: const Icon(Icons.privacy_tip),
+                  title: Text(AppLocalizations.of(context)!.privacy),
+                ),
+                ListTile(
+                  leading: Consumer<ThemeProvider>(
+                    builder: (context, themeProvider, _) {
+                      if (themeProvider.themeType == ThemeType.dark) {
+                        return const Icon(Icons.light_mode);
+                      } else {
+                        return const Icon(Icons.dark_mode);
+                      }
+                    }
                   ),
-                )
+                  title: ElevatedButton(
+                    onPressed: () { 
+                      Provider.of<ThemeProvider>(context, listen: false).toggleTheme(); 
+                    },
+                    child: Consumer<ThemeProvider>(
+                      builder: (context, themeProvider, _) {
+                        if (themeProvider.themeType == ThemeType.dark) {
+                          return Text(AppLocalizations.of(context)!.lightMode, style: TextStyle(color: Theme.of(context).colorScheme.secondary),);
+                        } else {
+                            return Text(AppLocalizations.of(context)!.darkmode, style: TextStyle(color: Theme.of(context).colorScheme.secondary),);
+                        }
+                      }
+                    )
+                  ),
+                ),
+                const ListTile(
+                  leading: Icon(Icons.language),
+                  title: LanguageSelection(),
+                ),
               ],
             ),
             ListTile(
               leading: const Icon(Icons.logout),
-              title: const Text("退出登錄"),
+              title: Text(AppLocalizations.of(context)!.logout),
               onTap: () {
                 logout(context);
                 AuthManager.logout();

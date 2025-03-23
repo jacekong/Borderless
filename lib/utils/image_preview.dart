@@ -27,7 +27,7 @@ class _ImagePreviewState extends State<ImagePreview> with AutomaticKeepAliveClie
   late PageController _pageController;
   int _currentPage = 0;
 
-   @override
+  @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: widget.initialIndex);
@@ -120,7 +120,7 @@ class _ImagePreviewState extends State<ImagePreview> with AutomaticKeepAliveClie
     _pageController.dispose();
     super.dispose();
   }
-   @override
+  @override
   bool get wantKeepAlive => true;
     
 }
@@ -199,15 +199,15 @@ class FullScreenImage extends StatelessWidget {
       
       final imageBytes = await _getImageBytes();
 
-      // Save image to gallery
-      if (await _requestPermission(Permission.storage)) {
+       // Save image to gallery
+      if (!await _requestPermission(Permission.storage)) {
         appDirectory = (await getExternalStorageDirectory())!;
 
         String newPath = '';
         // '/storage/emulated/0/Android/data/com.example.borderless/files
 
         List<String> folderDirectory = appDirectory.path.split('/');
-  
+
         for (int x = 1; x < folderDirectory.length; x++) {
           String folder = folderDirectory[x];
           if (folder != "Android") {
@@ -216,26 +216,30 @@ class FullScreenImage extends StatelessWidget {
             break;
           }
         }
-        newPath = "$newPath/Borderless/files";
-        appDirectory = Directory(newPath);
+
+        newPath = "$newPath/Pictures/Borderless";
+        // Create the directory if it doesn't exist
+        final saveDirectory = Directory(newPath);
+        if (!await saveDirectory.exists()) {
+          await saveDirectory.create(recursive: true);
+        }
 
         File file = File(
-        path.join(appDirectory.path, path.basename(imageUrl)));
+        path.join(saveDirectory.path, path.basename(imageUrl)));
 
         await file.writeAsBytes(imageBytes);
 
       } else {
         return false;
       }
-      
-      // Show a message indicating success
+
+       // Show a message indicating success
       CustomSnackbar.show(
         context: context, 
         message: '已保存到相冊', 
         backgroundColor: Colors.green,
       );
     } catch (e) {
-
       // Show an error message if saving fails
       CustomSnackbar.show(
         context: context, 

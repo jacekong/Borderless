@@ -6,6 +6,7 @@ import 'package:borderless/utils/page_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FriendsList extends StatefulWidget {
   const FriendsList({super.key});
@@ -55,9 +56,9 @@ class _FriendsListState extends State<FriendsList> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "朋友列表",
-          style: TextStyle(fontSize: 19),
+        title: Text(
+          AppLocalizations.of(context)!.friendList,
+          style: const TextStyle(fontSize: 19),
         ),
       ),
       body: RefreshIndicator(
@@ -73,7 +74,7 @@ class _FriendsListState extends State<FriendsList> {
             // Friend Requests section
             Card(
               child: ListTile(
-                title: const Text("朋友邀請"),
+                title: Text(AppLocalizations.of(context)!.friendRequest),
                 leading: Stack(
                   children: [
                     const Icon(Icons.people),
@@ -108,11 +109,11 @@ class _FriendsListState extends State<FriendsList> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
                     child: Text(
-                      "我的朋友",
-                      style: TextStyle(
+                      AppLocalizations.of(context)!.myFriend,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.normal,
                       ),

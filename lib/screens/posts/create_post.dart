@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:reorderable_grid_view/reorderable_grid_view.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CreatePost extends StatefulWidget {
   const CreatePost({super.key});
@@ -120,7 +121,7 @@ class _CreatePostState extends State<CreatePost> {
     if (userProfile == null) {
       return Scaffold(
         appBar: AppBar(
-          title: const Text("創建新的貼文"),
+          title: Text(AppLocalizations.of(context)!.newPost),
         ),
         body: const Center(
           child: Text("系統出小差啦。。。"),
@@ -136,9 +137,9 @@ class _CreatePostState extends State<CreatePost> {
         ),
         elevation: 0,
         centerTitle: false,
-        title: const Text(
-          "創建新的貼文",
-          style: TextStyle(fontSize: 19),
+        title: Text(
+          AppLocalizations.of(context)!.newPost,
+          style: const TextStyle(fontSize: 19),
         ),
       ),
       body: Padding(
@@ -184,7 +185,7 @@ class _CreatePostState extends State<CreatePost> {
                     borderSide: BorderSide(
                         color: Theme.of(context).colorScheme.secondary),
                   ),
-                  labelText: "撰寫貼文。。。",
+                  labelText: AppLocalizations.of(context)!.whatOnYourMind,
                   labelStyle:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
                 ),
@@ -237,7 +238,7 @@ class _CreatePostState extends State<CreatePost> {
                     },
                   ),
                 ),
-                const Text("發布到廣場"),
+                Text(AppLocalizations.of(context)!.postToPublic),
               ],
             ),
             const SizedBox(
@@ -331,7 +332,7 @@ class _CreatePostState extends State<CreatePost> {
                               ),
                             )
                           : const Center(child: CircularProgressIndicator())
-                      : const Center(child: Text('選一張你喜歡的相片吧～')),
+                      : Center(child: Text(AppLocalizations.of(context)!.selectImage)),
             ),
             // post button
             ElevatedButton(
@@ -348,7 +349,7 @@ class _CreatePostState extends State<CreatePost> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 32, right: 32),
                 child: Text(
-                  '發送✅',
+                  AppLocalizations.of(context)!.sendPost,
                   style:
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),

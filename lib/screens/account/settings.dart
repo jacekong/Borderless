@@ -15,6 +15,7 @@ import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/posts/post_details.dart';
 import 'package:borderless/utils/pixel_placeholder.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Settings extends StatefulWidget {
   const Settings({
@@ -62,9 +63,9 @@ class _SettingsState extends State<Settings>
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Text(
-          "我的帳戶",
-          style: TextStyle(fontSize: 19),
+        title: Text(
+          AppLocalizations.of(context)!.myAccount,
+          style: const TextStyle(fontSize: 19),
         ),
       ),
       body: RefreshIndicator(
@@ -128,7 +129,8 @@ class _SettingsState extends State<Settings>
                 // bio,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Text("Bio: ${userProfile.bio}"),
+                  child: Text(
+                      "${AppLocalizations.of(context)!.bio} ${userProfile.bio}"),
                 ),
                 // edit profile,
                 Padding(
@@ -139,7 +141,7 @@ class _SettingsState extends State<Settings>
                           .push(PageAnimation.craeteUpdateProfileRoute());
                     },
                     child: Text(
-                      "更新資料",
+                      AppLocalizations.of(context)!.updateProfile,
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.secondary,
                       ),
@@ -211,80 +213,89 @@ class _SettingsState extends State<Settings>
                                           const Icon(Icons.error),
                                       fit: BoxFit.cover,
                                     )
-                                    : post.postVideo.isNotEmpty
-                                        ? FutureBuilder<String>(
-                                            future: VideoThumbnailUtil.generateThumbnail(post.postVideo[0].video, post.id),
-                                            builder: (context, snapshot) {
-                                              if (snapshot.connectionState == ConnectionState.waiting) {
-                                                return Container(
-                                                  color: Colors.blueGrey,
-                                                  child: const Center(child: CircularProgressIndicator()),
-                                                );
-                                              } else if (snapshot.hasError || !snapshot.hasData) {
-                                                return Container(
-                                                  color: Colors.grey[200],
-                                                  child: Center(
-                                                    child: Text(
-                                                      post.content,
-                                                      softWrap: true,
-                                                      overflow: TextOverflow.fade,
-                                                      style: const TextStyle(color: Colors.grey, fontSize: 7),
-                                                    ),
-                                                  ),
-                                                );
-                                              } else {
-                                                return Stack(
-                                                  children: [
-                                                    Image.file(
-                                                            File(snapshot.data!),
-                                                            fit: BoxFit.cover,
-                                                            width: double.infinity,
-                                                            height: double.infinity,
-                                                          ),
-                                                    Positioned(
-                                                          top: 0,
-                                                          left: 0,
-                                                          right: 0,
-                                                          bottom: 0,
-                                                          child: Center(
-                                                            child: Opacity(
-                                                              opacity: 0.7,
-                                                              child: Container(
-                                                                width: 30,
-                                                                height: 30,
-                                                                decoration: BoxDecoration(
-                                                                  color: Colors.black,
-                                                                  borderRadius: BorderRadius.circular(50),
-                                                                ),
-                                                                child: const Icon(
-                                                                  Icons.play_arrow,
-                                                                  color: Colors.white,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                  ]
-                                                );
-                                              }
-                                            },
-                                          )
-                                  :
-                                  Container(
-                                      // Placeholder when no images are available
-                                      color: Colors.grey[200],
-                                      child: Center(
-                                        child: Text(
-                                          softWrap: true,
-                                          overflow: TextOverflow.fade,
-                                          post.content,
-                                          style: const TextStyle(
-                                            color: Colors.grey,
-                                            fontSize: 7,
+                                  // : post.postVideo.isNotEmpty
+                                  //     ? FutureBuilder<String>(
+                                  //         future: VideoThumbnailUtil
+                                  //             .generateThumbnail(
+                                  //                 post.postVideo[0].video,
+                                  //                 post.id),
+                                  //         builder: (context, snapshot) {
+                                  //           if (snapshot.connectionState ==
+                                  //               ConnectionState.waiting) {
+                                  //             return Container(
+                                  //               color: Colors.blueGrey,
+                                  //               child: const Center(
+                                  //                   child:
+                                  //                       CircularProgressIndicator()),
+                                  //             );
+                                  //           } else if (snapshot.hasError ||
+                                  //               !snapshot.hasData) {
+                                  //             return Container(
+                                  //               color: Colors.grey[200],
+                                  //               child: Center(
+                                  //                 child: Text(
+                                  //                   post.content,
+                                  //                   softWrap: true,
+                                  //                   overflow: TextOverflow.fade,
+                                  //                   style: const TextStyle(
+                                  //                       color: Colors.grey,
+                                  //                       fontSize: 7),
+                                  //                 ),
+                                  //               ),
+                                  //             );
+                                  //           } else {
+                                  //             return Stack(children: [
+                                  //               Image.file(
+                                  //                 File(snapshot.data!),
+                                  //                 fit: BoxFit.cover,
+                                  //                 width: double.infinity,
+                                  //                 height: double.infinity,
+                                  //               ),
+                                  //               Positioned(
+                                  //                 top: 0,
+                                  //                 left: 0,
+                                  //                 right: 0,
+                                  //                 bottom: 0,
+                                  //                 child: Center(
+                                  //                   child: Opacity(
+                                  //                     opacity: 0.7,
+                                  //                     child: Container(
+                                  //                       width: 30,
+                                  //                       height: 30,
+                                  //                       decoration:
+                                  //                           BoxDecoration(
+                                  //                         color: Colors.black,
+                                  //                         borderRadius:
+                                  //                             BorderRadius
+                                  //                                 .circular(50),
+                                  //                       ),
+                                  //                       child: const Icon(
+                                  //                         Icons.play_arrow,
+                                  //                         color: Colors.white,
+                                  //                       ),
+                                  //                     ),
+                                  //                   ),
+                                  //                 ),
+                                  //               ),
+                                  //             ]);
+                                  //           }
+                                  //         },
+                                  //       )
+                                      : Container(
+                                          // Placeholder when no images are available
+                                          color: Colors.grey[200],
+                                          child: Center(
+                                            child: Text(
+                                              softWrap: true,
+                                              overflow: TextOverflow.fade,
+                                              post.content,
+                                              style: const TextStyle(
+                                                color: Colors.grey,
+                                                fontSize: 7,
+                                              ),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ),
                             );
                           },
                         ),

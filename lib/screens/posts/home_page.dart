@@ -2,6 +2,7 @@ import 'package:borderless/screens/posts/friend_post.dart';
 import 'package:borderless/screens/posts/public_post.dart';
 import 'package:borderless/utils/page_animation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,12 +24,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     super.initState();
   }
 
-  // Future<void> _refreshPosts() async {
-  //   setState(() {
-  //     _posts = ApiService.fetchPosts();
-  //   });
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +40,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             onPressed: () {
               Navigator.of(context).push(PageAnimation.createChatRoute());
             },
-            icon: const Icon(Icons.chat_bubble_outline),
+            icon: Image.asset(
+                  'assets/icons/chat.png',
+                  width: 24,
+                  height: 24,
+                ),
           ),
         ],
       ),
@@ -63,9 +62,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 isScrollable: true,
                 tabAlignment: TabAlignment.start,
                 dividerColor: Colors.transparent,
-                tabs: const [
-                  Tab(text: "朋友動態"),
-                  Tab(text: "廣場"),
+                tabs: [
+                  Tab(text: AppLocalizations.of(context)!.following),
+                  Tab(text: AppLocalizations.of(context)!.forYou),
                 ]),
           ),
           // tab bar view

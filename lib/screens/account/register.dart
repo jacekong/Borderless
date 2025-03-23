@@ -4,6 +4,7 @@ import 'package:borderless/screens/login.dart';
 import 'package:borderless/utils/is_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -83,7 +84,7 @@ class _RegisterPageState extends State<RegisterPage> {
           backgroundColor: Theme.of(context).colorScheme.background,
           elevation: 0,
           title: Text(
-            "新建一個帳號",
+            AppLocalizations.of(context)!.createUser,
             style: TextStyle(color: Theme.of(context).colorScheme.secondary),
           ),
           actions: const []),
@@ -116,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         color: Theme.of(context).colorScheme.tertiary,
                         borderRadius: BorderRadius.circular(100),
                       ),
-                      child: const Center(child: Text('選擇你喜歡的頭像喔～', style: TextStyle(fontSize: 12),))
+                      child: Center(child: Text(AppLocalizations.of(context)!.chooseAvatar, style: const TextStyle(fontSize: 12),))
                     ),
               Positioned(
                 bottom: 0,
@@ -157,7 +158,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         border: InputBorder.none,
                         suffixIcon: const Icon(Icons.person),
                         //hintText: 'Username',
-                        labelText: "用戶名",
+                        labelText: AppLocalizations.of(context)!.userName,
                         labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                         //hintStyle: TextStyle(color: Colors.grey),
                         ),
@@ -192,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         border: InputBorder.none,
                         suffixIcon: const Icon(Icons.email),
                         //hintText: 'Password',
-                        labelText: "郵箱",
+                        labelText: AppLocalizations.of(context)!.email,
                         //hintStyle: TextStyle(color: Colors.grey),
                         labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                         ),
@@ -237,7 +238,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                         ),
                         //hintText: 'Password',
-                        labelText: "密碼",
+                        labelText: AppLocalizations.of(context)!.password,
                         labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                         ),
                   ),
@@ -279,7 +280,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             ),
                         ),
                         //hintText: 'Password',
-                        labelText: "確認密碼",
+                        labelText:AppLocalizations.of(context)!.confirmPassword,
                         labelStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
                         ),
                   ),
@@ -311,9 +312,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         // uploadImg();
                         handleSubmit();
                       },
-                      child: const Text(
-                        '確認',
-                        style: TextStyle(color: Colors.white),
+                      child: Text(
+                        AppLocalizations.of(context)!.confirm,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     )),
               ),
@@ -373,7 +374,6 @@ class _RegisterPageState extends State<RegisterPage> {
             MaterialPageRoute(
               builder: (context) => LoginScreen(
                 onLoginSuccess: () {
- 
                 },
               ),
             ),
@@ -422,7 +422,7 @@ class ShowDialogPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("確認密碼"),
+      title: Text(AppLocalizations.of(context)!.confirmPassword),
       content: Container(
         height: 200,
         decoration: BoxDecoration(
@@ -433,14 +433,14 @@ class ShowDialogPage extends StatelessWidget {
               padding: const EdgeInsets.only(top: 15, bottom: 15),
               child: Row(
                 children: [
-                  const Text("用戶名: "),
+                  Text(AppLocalizations.of(context)!.userName),
                   Text(username),
                 ],
               ),
             ),
             Row(
               children: [
-                const Text("密碼:   "),
+                Text(AppLocalizations.of(context)!.password),
                 Text(password),
               ],
             ),
@@ -458,7 +458,7 @@ class ShowDialogPage extends StatelessWidget {
                   },
                   color: Colors.blue,
                   child:
-                      const Text("確認", style: TextStyle(color: Colors.white)),
+                      Text(AppLocalizations.of(context)!.confirmPassword, style: const TextStyle(color: Colors.white)),
                 ),
                 const SizedBox(width: 7),
                 // discard

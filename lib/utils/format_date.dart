@@ -13,7 +13,7 @@ class DateFormatted {
         return DateFormat.Hm().format(timestamp.toLocal()); // Format "Today + time"
       } else if (isSameDay(timestamp, yesterday)) {
         // If the timestamp is from yesterday
-        return '昨天 ${DateFormat.Hm().format(timestamp.toLocal())}'; // Format "Yesterday + time"
+        return DateFormat.Hm().format(timestamp.toLocal()); // Format "Yesterday + time"
       } else {
         // For all other dates
         return DateFormat.MMMd().add_Hm().format(timestamp.toLocal()); // Format "date + time"

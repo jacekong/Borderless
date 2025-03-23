@@ -52,7 +52,7 @@ class NotificationController {
             id: UniqueId.createUniqueId(),
             channelKey: 'basic_channel_nitification',
             title: sender,
-            body: '$sender 向你發了一張圖片',
+            body: '$sender 向你發送了一張圖片',
             bigPicture: 'https://$notification',
             largeIcon: 'https://$avatar',
             notificationLayout: NotificationLayout.BigPicture,

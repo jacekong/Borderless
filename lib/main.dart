@@ -6,6 +6,7 @@ import 'package:borderless/api/websocket_service.dart';
 import 'package:borderless/components/home.dart';
 import 'package:borderless/provider/chat_history_provider.dart';
 import 'package:borderless/provider/friend_request_provider.dart';
+import 'package:borderless/provider/language_provider.dart';
 import 'package:borderless/provider/request_provider.dart';
 import 'package:borderless/provider/user_profile_provider.dart';
 import 'package:borderless/screens/login.dart';
@@ -13,13 +14,16 @@ import 'package:borderless/screens/posts/create_post.dart';
 import 'package:borderless/theme/dark_theme.dart';
 import 'package:borderless/theme/light_theme.dart';
 import 'package:borderless/theme/theme_provider.dart';
+import 'package:borderless/utils/local_manager.dart';
 import 'package:borderless/utils/notification_controller.dart';
 import 'package:borderless/utils/notification_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -40,7 +44,8 @@ void main() async {
         ChangeNotifierProvider(create: (_) => UserProfileProvider()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => FriendRequestProvider()),
-        ChangeNotifierProvider(create: (_) => ChatHistoryProvider())
+        ChangeNotifierProvider(create: (_) => ChatHistoryProvider()),
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
       ],
       child: const MyApp(),
     ),
@@ -135,7 +140,17 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    final localeProvider = Provider.of<LocaleProvider>(context);
+
     return MaterialApp(
+      locale: localeProvider.locale,
+      supportedLocales: LocaleManager.supportedLocales,
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       navigatorKey: navigatorKey,
       title: 'Borderless',
       debugShowCheckedModeBanner: false,
@@ -158,13 +173,12 @@ class _MyAppState extends State<MyApp> {
             return LoginScreen(
               onLoginSuccess: () {
               _initWebSocket(token);
-            }
+            },
             );
           }
         },
       ),
       routes: {
-        // '/': (context) => const Home(),
         '/create-post':(context) => const CreatePost(),
       },
     );

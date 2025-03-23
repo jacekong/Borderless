@@ -6,6 +6,7 @@ import 'package:borderless/utils/is_loading.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class UpdateUser extends StatefulWidget {
   const UpdateUser({
@@ -45,7 +46,7 @@ class _UpdateUserState extends State<UpdateUser> {
         backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
         title: Text(
-          "更新資料",
+          AppLocalizations.of(context)!.updateProfile,
           style: TextStyle(color: Theme.of(context).colorScheme.secondary),
         ),
         actions: const [],
@@ -82,7 +83,7 @@ class _UpdateUserState extends State<UpdateUser> {
                           color: Theme.of(context).colorScheme.tertiary,
                           borderRadius: BorderRadius.circular(100),
                         ),
-                        child: const Center(child: Text("更換頭像"))),
+                        child: Center(child: Text(AppLocalizations.of(context)!.changeAvatar))),
                 Positioned(
                   bottom: 0,
                   right: 0,
@@ -123,7 +124,7 @@ class _UpdateUserState extends State<UpdateUser> {
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         suffixIcon: const Icon(Icons.person),
-                        labelText: "用戶名",
+                        labelText: AppLocalizations.of(context)!.userName,
                         labelStyle: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -155,7 +156,7 @@ class _UpdateUserState extends State<UpdateUser> {
                       onChanged: (String text) {},
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: "郵箱",
+                        labelText: AppLocalizations.of(context)!.email,
                         labelStyle: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -186,7 +187,7 @@ class _UpdateUserState extends State<UpdateUser> {
                       onChanged: (String text) {},
                       decoration: InputDecoration(
                         border: InputBorder.none,
-                        labelText: "bio",
+                        labelText: AppLocalizations.of(context)!.bio,
                         labelStyle: TextStyle(
                           color: Theme.of(context).colorScheme.secondary,
                         ),
@@ -213,9 +214,9 @@ class _UpdateUserState extends State<UpdateUser> {
                       onPressed: () {
                         _updateUserData();
                       },
-                      child: const Text(
-                        '確認',
-                        style: TextStyle(color: Colors.white),
+                      child: Text(
+                        AppLocalizations.of(context)!.confirm,
+                        style: const TextStyle(color: Colors.white),
                       ),
                     ),
                   ),

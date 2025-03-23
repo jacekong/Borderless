@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:borderless/utils/notification_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:device_info_plus/device_info_plus.dart';
+// import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -25,6 +25,7 @@ import 'package:borderless/utils/audio_controller.dart';
 import 'package:borderless/utils/format_date.dart';
 import 'package:borderless/utils/image_preview.dart';
 import 'package:record/record.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatPage extends StatefulWidget {
   final UserProfile friend;
@@ -65,7 +66,7 @@ class _ChatPageState extends State<ChatPage> {
   XFile? _image;
   final picker = ImagePicker();
 
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+  // DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
   // audio recorder
   final recorder = AudioRecorder();
@@ -699,7 +700,7 @@ class _ChatPageState extends State<ChatPage> {
                           border: InputBorder.none,
                           hintText: audioController.isRecording.value
                               ? "正在錄音..."
-                              : "輸入訊息...",
+                              : AppLocalizations.of(context)!.typeMessage,
                           hintStyle: const TextStyle(color: Colors.black)),
                     ),
                   ),

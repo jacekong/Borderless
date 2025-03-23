@@ -3,6 +3,7 @@ import 'package:borderless/model/user_profile.dart';
 import 'package:borderless/screens/account/user_details.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchFriend extends StatefulWidget {
   const SearchFriend({super.key});
@@ -13,7 +14,6 @@ class SearchFriend extends StatefulWidget {
 
 class _SearchFriendState extends State<SearchFriend> {
   final TextEditingController _searchController = TextEditingController();
-  final FocusNode _focusNode = FocusNode();
   List<UserProfile> _searchResults = [];
 
   @override
@@ -25,7 +25,6 @@ class _SearchFriendState extends State<SearchFriend> {
   @override
   void dispose() {
     _searchController.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -38,54 +37,56 @@ class _SearchFriendState extends State<SearchFriend> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('找朋友', style: TextStyle(fontSize: 19),),
+          title: Text(AppLocalizations.of(context)!.searchFriend, style: const TextStyle(fontSize: 19),),
         ),
-        body: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(5.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  borderRadius: BorderRadius.circular(7)
-                ),
-                child: TextField(
-                  focusNode: _focusNode,
-                  onTapOutside: ((event) {
-              FocusScope.of(context).unfocus();
-            }),
-                  cursorColor: Theme.of(context).colorScheme.secondary,
-                  style: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hoverColor: Theme.of(context).colorScheme.secondary,
-                    hintText: '通過用戶名或ID查詢',
-                    hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
-                    prefixIcon: const Icon(Icons.search),
-                    prefixIconColor: Theme.of(context).colorScheme.secondary,
-                    border: InputBorder.none,  
+        body: GestureDetector(
+          onTap: () =>  FocusScope.of(context).requestFocus(FocusNode()),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.tertiary,
+                    borderRadius: BorderRadius.circular(7)
+                  ),
+                  child: TextField(
+                    onTapOutside: ((event) {
+                FocusScope.of(context).unfocus();
+              }),
+                    cursorColor: Theme.of(context).colorScheme.secondary,
+                    style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hoverColor: Theme.of(context).colorScheme.secondary,
+                      hintText: AppLocalizations.of(context)!.searchByname,
+                      hintStyle: TextStyle(color: Theme.of(context).colorScheme.secondary),
+                      prefixIcon: const Icon(Icons.search),
+                      prefixIconColor: Theme.of(context).colorScheme.secondary,
+                      border: InputBorder.none,  
+                    ),
                   ),
                 ),
               ),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: _searchResults.length,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(_searchResults[index].username),
-                    leading: CircleAvatar(
-                      backgroundImage:
-                          NetworkImage(_searchResults[index].avatar),
-                    ),
-                    onTap: () {
-                      Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: UserDetailPage(user: _searchResults[index]),));
-                    },
-                  );
-                },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: _searchResults.length,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(_searchResults[index].username),
+                      leading: CircleAvatar(
+                        backgroundImage:
+                            NetworkImage(_searchResults[index].avatar),
+                      ),
+                      onTap: () {
+                        Navigator.push(context, PageTransition(type: PageTransitionType.bottomToTop, child: UserDetailPage(user: _searchResults[index]),));
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

@@ -98,7 +98,7 @@ class _PostContainerState extends State<PostContainer>
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -107,22 +107,27 @@ class _PostContainerState extends State<PostContainer>
                 Row(
                   children: [
                     //avatar
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(top: 11, left: 11, bottom: 11),
-                      child: CircleAvatar(
-                        radius: 26,
-                        child: Container(
-                          height: 150,
-                          width: 150,
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.blueGrey,
-                          ),
-                          child: CircleAvatar(
-                            backgroundImage: CachedNetworkImageProvider(
-                                widget.post.author['avatar'],
-                                cacheManager: customCacheManager),
+                    GestureDetector(
+                      onTap: () {
+                        
+                      },
+                      child: Padding(
+                        padding:
+                            const EdgeInsets.only(top: 11, left: 11, bottom: 11),
+                        child: CircleAvatar(
+                          radius: 26,
+                          child: Container(
+                            height: 150,
+                            width: 150,
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.blueGrey,
+                            ),
+                            child: CircleAvatar(
+                              backgroundImage: CachedNetworkImageProvider(
+                                  widget.post.author['avatar'],
+                                  cacheManager: customCacheManager),
+                            ),
                           ),
                         ),
                       ),
@@ -179,13 +184,18 @@ class _PostContainerState extends State<PostContainer>
               ],
             ),
             // caption
-            Container(
-              margin: const EdgeInsets.only(left: 8.0),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 11, right: 11, bottom: 11),
-                child: Text(
-                  widget.post.content,
-                  style: const TextStyle(fontSize: 15, fontFamily: 'Roboto'),
+            GestureDetector(
+              onTap: () {
+                _navigateToDetailPage(widget.post);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(left: 8.0),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 11, right: 11, bottom: 11),
+                  child: Text(
+                    widget.post.content,
+                    style: const TextStyle(fontSize: 15, fontFamily: 'Roboto'),
+                  ),
                 ),
               ),
             ),
@@ -276,26 +286,78 @@ class _PostContainerState extends State<PostContainer>
                       final videoUrl = widget.post.postVideo[videoIndex].video;
                       final postId = widget.post.id;
 
-                      return FutureBuilder<String>(
-                        future: VideoThumbnailUtil.generateThumbnail(
-                            videoUrl, postId),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return Container(
-                              color: Colors.blueGrey,
-                              child: const Center(
-                                  child: CircularProgressIndicator()),
-                            );
-                          } else if (snapshot.hasError ||
-                              !snapshot.hasData ||
-                              snapshot.data!.isEmpty) {
-                            return Container(
-                              color: Colors.grey[200],
-                              child: const Center(child: Icon(Icons.error)),
-                            );
-                          } else {
-                            return GestureDetector(
+                      // return FutureBuilder<String>(
+                      //   future: VideoThumbnailUtil.generateThumbnail(
+                      //       videoUrl, postId),
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.waiting) {
+                      //       return Container(
+                      //         color: Colors.blueGrey,
+                      //         child: const Center(
+                      //             child: CircularProgressIndicator()),
+                      //       );
+                      //     } else if (snapshot.hasError ||
+                      //         !snapshot.hasData ||
+                      //         snapshot.data!.isEmpty) {
+                      //       return Container(
+                      //         color: Colors.grey[200],
+                      //         child: const Center(child: Icon(Icons.error)),
+                      //       );
+                      //     } else {
+                      //       return GestureDetector(
+                      //     onTap: () {
+                      //       if (!_chewieControllers.containsKey(videoUrl)) {
+                      //         final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
+                      //         final chewieController = ChewieController(
+                      //           videoPlayerController: videoPlayerController,
+                      //           autoPlay: false,
+                      //           looping: false,
+                      //         );
+
+                      //         setState(() {
+                      //           _chewieControllers[videoUrl] = chewieController;
+                      //         });
+                      //       } else {
+                      //         setState(() {
+                      //           _chewieControllers[videoUrl]!.play();
+                      //         });
+                      //       }
+                      //     },
+                      //     child: Stack(
+                      //       children: [
+                      //         Image.file(
+                      //           File(snapshot.data!),
+                      //           fit: BoxFit.cover,
+                      //           width: double.infinity,
+                      //           height: double.infinity,
+                      //         ),
+                      //         if (!_chewieControllers.containsKey(videoUrl) || !_chewieControllers[videoUrl]!.isPlaying)
+                      //           Positioned(
+                      //             top: 0,
+                      //             left: 0,
+                      //             right: 0,
+                      //             bottom: 0,
+                      //             child: Container(
+                      //               color: Colors.black.withOpacity(0.3),
+                      //               child: const Center(
+                      //                 child: Icon(
+                      //                   Icons.play_arrow,
+                      //                   color: Colors.white,
+                      //                   size: 50,
+                      //                 ),
+                      //               ),
+                      //             ),
+                      //           ),
+                      //         if (_chewieControllers.containsKey(videoUrl))
+                      //           Chewie(controller: _chewieControllers[videoUrl]!),
+                      //       ],
+                      //     ),
+                      //   );
+                      //     }
+                      //   },
+                      // );
+                      return GestureDetector(
                           onTap: () {
                             if (!_chewieControllers.containsKey(videoUrl)) {
                               final videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(videoUrl));
@@ -316,12 +378,6 @@ class _PostContainerState extends State<PostContainer>
                           },
                           child: Stack(
                             children: [
-                              Image.file(
-                                File(snapshot.data!),
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
                               if (!_chewieControllers.containsKey(videoUrl) || !_chewieControllers[videoUrl]!.isPlaying)
                                 Positioned(
                                   top: 0,
@@ -344,9 +400,6 @@ class _PostContainerState extends State<PostContainer>
                             ],
                           ),
                         );
-                          }
-                        },
-                      );
                     },
                   ),
                 ),
@@ -371,10 +424,12 @@ class _PostContainerState extends State<PostContainer>
                   onPressed: () {
                     _navigateToDetailPage(widget.post);
                   },
-                  icon: const Icon(
-                    Icons.chat_rounded,
-                    color: Colors.grey,
-                  ),
+                  icon: Image.asset(
+                  'assets/icons/comment.png',
+                  width: 24,
+                  height: 24,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
                 ),
               ],
             ),
