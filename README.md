@@ -34,6 +34,7 @@ A Flutter application serving as the frontend for a Django-powered blog and real
 - **Dependencies**: See `pubspec.yaml`
 
 ## Project Structure
+```bash
 lib/
 ├── api/                       # API-related files for backend communication
 │   ├── api_endpoint.dart      # Defines API endpoints
@@ -117,7 +118,7 @@ lib/
 │   ├── snack_bar.dart         # Utility for snack bar notifications
 │   └── utils.dart             # General utility functions
 └── main.dart                  # App entry point
-
+```
 ## Setup Instructions
 
 ### Prerequisites
