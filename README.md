@@ -217,3 +217,7 @@ The primary goal is to complete the development of this project and ensure all p
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
+![Flutter](https://img.shields.io/badge/Flutter-3.0+-blue.svg)
+![Django](https://img.shields.io/badge/Django-4.0+-green.svg)
